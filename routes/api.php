@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\CustomerController;
 use App\Http\Controllers\Api\PermissionController;
 use App\Http\Controllers\Api\ProductController;
@@ -39,6 +40,10 @@ Route::middleware(['auth:sanctum'])->group(function(){
 
     //Products
     Route::apiResource('products', ProductController::class);
+
+    //Categories
+    Route::get('categories', [CategoryController::class, 'index']);
+    Route::post('categories', [CategoryController::class, 'store']);
 
     Route::get('permissions', [PermissionController::class, 'index']);
 });

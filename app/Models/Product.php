@@ -17,5 +17,12 @@ class Product extends Model
         'selling_price',
         'color',
         'description',
+        'category_id',
+        'deleted',
     ];
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
 }

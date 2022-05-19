@@ -31,7 +31,8 @@ class UpdateRequest extends FormRequest
             'selling_price' => ['required', 'numeric'],
             'color' => ['regex:/^(#(?:[0-9a-f]{2}){2,4}|#[0-9a-f]{3}|(?:rgba?|hsla?)\((?:\d+%?(?:deg|rad|grad|turn)?(?:,|\s)+){2,3}[\s\/]*[\d\.]+%?\))$/i',],
             'description' => ['nullable'],
-            'deleted' => ['required', 'boolean'],
+            'available' => ['required', 'boolean'],
+            'category_id' => ['required'],
         ];
     }
 }

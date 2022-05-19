@@ -19,18 +19,21 @@ class ProductController extends Controller
     {
         $this->authorize('product-index');
 
-        $products = Product::select(
-                        'id',
-                        'name',
-                        'label',
-                        'code',
-                        'cost_price',
-                        'selling_price',
-                        'color',
-                        'description',
-                        'available'
-                    )
-                    ->paginate(10);
+        $products = Product
+                        ::where()
+                        ->with('category:id,name')
+                        ->select(
+                            'id',
+                            'name',
+                            'label',
+                            'code',
+                            'cost_price',
+                            'selling_price',
+                            'color',
+                            'description',
+                            'available',
+                        )
+                        ->paginate(10);
 
         return response(['products' => $products], 200);
     }
@@ -62,7 +65,9 @@ class ProductController extends Controller
     {
         $this->authorize('product-show');
 
-        $product = $product->select(
+        $product = $product
+                    ->with('category:id,name')
+                    ->select(
                         'name',
                         'label',
                         'code',

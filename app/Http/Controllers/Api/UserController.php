@@ -48,6 +48,8 @@ class UserController extends Controller
 
         $user->update($data);
 
+        $user->roles()->attach($data['roles']);
+
         return response(['message' => 'User updated successfully'], 200);
     }
 

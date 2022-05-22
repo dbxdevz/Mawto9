@@ -16,8 +16,8 @@ class AuthController extends Controller
 
         if(Auth::attempt($data)){
             $user = User::
-                        where('active', true)->
-                        where('id', request()->user()->id)
+                        where('active', true)
+                        ->where('id', request()->user()->id)
                         ->first();
 
             return response(['menu' => $user->menuName(), 'token' => $user->createToken('Token')->plainTextToken]);

@@ -27,8 +27,8 @@ class UpdateRequset extends FormRequest
             'first_name' => ['required', 'max:255'],
             'last_name' => ['required', 'max:255'],
             'address' => ['required', 'max:255'],
-            'phone' => ['required'],
-            'email' => ['email'],
+            'phone' => ['required', 'unique:customers,phone'],
+            'email' => ['email', 'unique:customers,email'],
             'city_id' => ['required'],
             'country_id' => ['required'],
         ];

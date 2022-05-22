@@ -27,8 +27,8 @@ class StoreRequset extends FormRequest
             'first_name' => ['required', 'max:255'],
             'last_name' => ['required', 'max:255'],
             'address' => ['required', 'max:255'],
-            'phone' => ['required'],
-            'email' => ['email'],
+            'phone' => ['required', 'unique:customers'],
+            'email' => ['email', 'unique:customers'],
             'city_id' => ['required'],
             'country_id' => ['required'],
         ];

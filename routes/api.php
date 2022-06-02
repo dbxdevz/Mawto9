@@ -3,6 +3,8 @@
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\CustomerController;
+use App\Http\Controllers\Api\CustomerDetailController;
+use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\PermissionController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\RoleController;
@@ -41,9 +43,17 @@ Route::middleware(['auth:sanctum'])->group(function(){
     //Products
     Route::apiResource('products', ProductController::class);
 
+    //Orders
+    Route::apiResource('orders', OrderController::class);
+
+    //Store and Update Customer
+    Route::post('customer/detail', [CustomerDetailController::class, 'crud']);
+
     //Categories
     Route::get('categories', [CategoryController::class, 'index']);
     Route::post('categories', [CategoryController::class, 'store']);
 
     Route::get('permissions', [PermissionController::class, 'index']);
+
+    Route::post('logout', AuthController::class, 'logout');
 });

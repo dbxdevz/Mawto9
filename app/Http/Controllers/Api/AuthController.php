@@ -12,11 +12,9 @@ class AuthController extends Controller
 {
     public function login(LoginRequest $loginRequest)
     {
-        $data = $loginRequest->validated();
-
-        if(Auth::attempt($data)){
-            $user = User::
-                        where('active', true)
+        if(Auth::attempt($loginRequest->all())){
+            $user = User
+                        ::where('active', true)
                         ->where('id', request()->user()->id)
                         ->first();
 
@@ -24,5 +22,12 @@ class AuthController extends Controller
         }
 
         return response(['message' => 'The provided credentials are incorrect.'], 422);
+    }
+
+    public function logout()
+    {
+        auth('sanctum')->user()->tokens()->delete();
+
+		return response(['message' => 'Tokens Revoked'], 200);
     }
 }

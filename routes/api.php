@@ -29,6 +29,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('login', [AuthController::class, 'login']);
 
+Route::post('check-auth', [AuthController::class, 'chechAuth']);
+
 Route::middleware(['auth:sanctum'])->group(function(){
 
     //Roles

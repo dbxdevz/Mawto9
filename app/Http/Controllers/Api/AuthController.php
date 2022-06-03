@@ -30,4 +30,13 @@ class AuthController extends Controller
 
 		return response(['message' => 'Tokens Revoked'], 200);
     }
+
+    public function chechAuth()
+    {
+        if(auth('sanctum')->user()){
+            return response(['message' => 'Auth true'], 200);
+        }
+
+        return response(['message' => 'Auth false'], 401);
+    }
 }

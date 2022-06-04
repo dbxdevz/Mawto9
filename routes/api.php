@@ -57,7 +57,7 @@ Route::middleware(['auth:sanctum'])->group(function(){
     Route::post('categories', [CategoryController::class, 'store']);
 
     //Role statistics
-    Route::get('roles/statistics', [RoleStatisticController::class, 'statistic']);
+    Route::get('role/statistics', [RoleStatisticController::class, 'statistic']);
 
 
     Route::get('permissions', [PermissionController::class, 'index']);

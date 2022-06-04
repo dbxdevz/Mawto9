@@ -18,6 +18,12 @@ return new class extends Migration
             $table->foreignId('order_status_id')->nullable()->constrained()->onDelete('set null');
             $table->foreignId('package_status_id')->nullable()->constrained()->onDelete('set null');
             $table->foreignId('customer_id')->nullable()->constrained()->onDelete('set null');
+            $table->foreignId('delivery_id')->nullable()->constrained()->onDelete('set null');
+            $table->longText('note')->nullable();
+            $table->longText('delivery_note')->nullable();
+            $table->string('subtotal');
+            $table->string('shipping_cost')->default(0);
+            $table->string('total');
             $table->timestamps();
         });
     }

@@ -16,7 +16,8 @@ class Customer extends Model
         'phone',
         'email',
         'city_id',
-        'country_id'
+        'country_id',
+        'whatsapp'
     ];
 
     public function Country()

@@ -20,8 +20,7 @@ class ProductController extends Controller
         $this->authorize('product-index');
 
         $products = Product
-                        ::where()
-                        ->with('category:id,name')
+                        ::with('category:id,name')
                         ->select(
                             'id',
                             'name',
@@ -108,6 +107,9 @@ class ProductController extends Controller
     {
         $this->authorize('product-destroy');
 
+        $product->available = true;
+        $product->save();
 
+        return response(['message' => 'Product deleted successfully'], 200);
     }
 }

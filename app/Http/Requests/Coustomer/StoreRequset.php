@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Coustomer;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Gate;
 
 class StoreRequset extends FormRequest
 {
@@ -13,7 +14,7 @@ class StoreRequset extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return Gate::authorize('customer-store');
     }
 
     /**

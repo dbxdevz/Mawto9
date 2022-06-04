@@ -17,7 +17,7 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        $this->authorize(('customer-index'));
+        $this->authorize('customer-index');
 
         $customers = Customer
             ::select(
@@ -27,7 +27,8 @@ class CustomerController extends Controller
                 'phone',
                 'email',
                 'country_id',
-                'city_id'
+                'city_id',
+                'whatsapp'
             )
             ->with(['Country:id,name', 'City:id,name'])
             ->paginate(10);
@@ -43,7 +44,7 @@ class CustomerController extends Controller
      */
     public function store(StoreRequset $request)
     {
-        $this->authorize(('customer-store'));
+        $this->authorize('customer-store');
 
         $data = $request->validated();
 
@@ -60,20 +61,21 @@ class CustomerController extends Controller
      */
     public function show(Request $request)
     {
-        $this->authorize(('customer-show'));
+        $this->authorize('customer-show');
 
-        $customer = Customer::where('id', $request->customer)->select(
-            'first_name',
-            'last_name',
-            'address',
-            'phone',
-            'email',
-            'country_id',
-            'city_id'
-        )
-        ->with(['Country:id,name', 'City:id,name'])
-        ->first()
-        ;
+        $customer = Customer::where('id', $request->customer)
+                        ->select(
+                            'first_name',
+                            'last_name',
+                            'address',
+                            'phone',
+                            'email',
+                            'country_id',
+                            'city_id'
+                        )
+                        ->with(['Country:id,name', 'City:id,name'])
+                        ->first()
+                        ;
 
         return response(['customer' => $customer], 200);
     }
@@ -87,7 +89,7 @@ class CustomerController extends Controller
      */
     public function update(UpdateRequset $request, Customer $customer)
     {
-        $this->authorize(('customer-update'));
+        $this->authorize('customer-update');
 
         $data = $request->validated();
 
@@ -104,7 +106,7 @@ class CustomerController extends Controller
      */
     public function destroy(Customer $customer)
     {
-        $this->authorize(('customer-destroy'));
+        $this->authorize('customer-destroy');
 
         $customer->delete();
 

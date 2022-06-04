@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Http\Requests\User;
+namespace App\Http\Requests\Order;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Validation\Rule;
 
-class UpdateRequest extends FormRequest
+class StoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -15,7 +14,7 @@ class UpdateRequest extends FormRequest
      */
     public function authorize()
     {
-        return Gate::authorize('user-update');;
+        return Gate::authorize('order-store');
     }
 
     /**
@@ -25,12 +24,13 @@ class UpdateRequest extends FormRequest
      */
     public function rules()
     {
-        $user = $this->route('user');
         return [
-            'name' => ['required'],
-            'email' => ['required', 'email', Rule::unique('users', 'email')->ignore($user->id)],
-            'roles' => ['required'],
-            'active' => ['required'],
+            'order_status_id' => ['required'],
+            'package_status_id' => ['required'],
+            'customer_id' => ['required'],
+            'note' => ['nullable'],
+            'delivery_note' => ['nullable'],
+            'products' => ['required'],
         ];
     }
 }

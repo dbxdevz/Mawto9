@@ -13,18 +13,18 @@ class UserController extends Controller
 {
     public function index()
     {
-        $this->authorize(('user-index'));
+        $this->authorize('user-index');
 
         $users = User::select('id', 'name', 'email', 'created_at', 'active')->with('roles')->paginate(10);
 
         return response(['users' => $users], 200);
     }
 
-    public function store(UserStoreRequest $requset)
+    public function store(UserStoreRequest $request)
     {
         $this->authorize('user-store');
 
-        $data = $requset->validated();
+        $data = $request->validated();
 
         $data['password'] = Hash::make($data['password']);
 
@@ -37,6 +37,8 @@ class UserController extends Controller
 
     public function show(Request $request)
     {
+        $this->authorize('user-show');
+
         $user = User::where('id', $request->user)->select('id', 'name', 'email', 'created_at', 'active')->first();
 
         return response(['user' => $user], 200);
@@ -44,6 +46,8 @@ class UserController extends Controller
 
     public function update(UpdateRequest $request, User $user)
     {
+        $this->authorize('user-update');
+
         $data = $request->validated();
 
         $user->update($data);
@@ -56,6 +60,8 @@ class UserController extends Controller
 
     public function destroy(User $user)
     {
+        $this->authorize('user-destroy');
+
         $user->update(['active' => false]);
 
         return response(['message' => 'User deleted successfully']);

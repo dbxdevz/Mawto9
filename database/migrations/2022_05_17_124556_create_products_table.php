@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('code');
             $table->float('cost_price');
             $table->float('selling_price');
-            $table->string('color');
+            $table->string('color')->nullable();
             $table->longText('description')->nullable();
             $table->boolean('available')->default(false);
             $table->timestamps();

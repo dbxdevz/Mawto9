@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Order\StoreRequest;
 use App\Models\Order;
+use App\Models\OrderDetail;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
@@ -15,7 +17,7 @@ class OrderController extends Controller
      */
     public function index()
     {
-        //
+
     }
 
     /**
@@ -24,9 +26,24 @@ class OrderController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreRequest $request)
     {
-        //
+        $this->authorize('customer-store');
+
+        $data = $request->validated();
+
+        $order = Order::create($data);
+
+        foreach($data['products'] as $product){
+            OrderDetail::create([
+                'order_id' => $order->id,
+                'product_id' => $product->id,
+                'unit_cost' => $product->unit_cost,
+                'quantity' => $product->quantity
+            ]);
+        }
+
+        return response(['message' => 'Created Successfully'], 200);
     }
 
     /**

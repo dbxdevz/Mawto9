@@ -28,8 +28,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('roles/statistics', [RoleStatisticController::class, 'statistic']);
-
 Route::post('login', [AuthController::class, 'login']);
 
 Route::post('check-auth', [AuthController::class, 'chechAuth']);
@@ -57,6 +55,10 @@ Route::middleware(['auth:sanctum'])->group(function(){
     //Categories
     Route::get('categories', [CategoryController::class, 'index']);
     Route::post('categories', [CategoryController::class, 'store']);
+
+    //Role statistics
+    Route::get('roles/statistics', [RoleStatisticController::class, 'statistic']);
+
 
     Route::get('permissions', [PermissionController::class, 'index']);
 

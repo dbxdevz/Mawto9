@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('status');
             $table->foreignId('order_priority_id')->nullable()->constrained()->onDelete('set null');
-            $table->boolean('status')->default(1);
+            $table->boolean('active')->default(1);
             $table->boolean('sms')->default(0);
             $table->timestamps();
         });

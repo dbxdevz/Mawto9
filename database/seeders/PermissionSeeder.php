@@ -18,7 +18,7 @@ class PermissionSeeder extends Seeder
     {
         //Dashboard
 		Permission::create([
-			'name' => 'dashboard',
+			'name' => 'dashboard-index',
 			'table_name' => 'Dashboard',
 		]);
 

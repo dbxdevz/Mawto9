@@ -19,8 +19,11 @@ class ProductController extends Controller
     {
         $this->authorize('product-index');
 
+        $limit = request('limit') ? request('limit') : 10;
+
         $products = Product
-                        ::with('category:id,name')
+                        ::where('available', false)
+                        ->with('category:id,name')
                         ->select(
                             'id',
                             'name',
@@ -31,10 +34,11 @@ class ProductController extends Controller
                             'color',
                             'description',
                             'available',
+                            'category_id',
                         )
-                        ->paginate(10);
+                        ->paginate($limit);
 
-        return response(['products' => $products], 200);
+        return response($products, 200);
     }
 
     /**
@@ -74,7 +78,8 @@ class ProductController extends Controller
                         'selling_price',
                         'color',
                         'description',
-                    );
+                        'category_id'
+                    )->first();
 
         return response(['product' => $product], 200);
     }

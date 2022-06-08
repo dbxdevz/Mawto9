@@ -15,7 +15,9 @@ class UserController extends Controller
     {
         $this->authorize('user-index');
 
-        $users = User::select('id', 'name', 'email', 'created_at', 'active')->with('roles')->paginate(10);
+        $limit = request('limit') ? request('limit') : 10;
+
+        $users = User::select('id', 'name', 'email', 'created_at', 'active')->with('roles')->paginate($limit);
 
         return response(['users' => $users], 200);
     }

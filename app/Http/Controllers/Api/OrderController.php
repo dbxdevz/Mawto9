@@ -17,7 +17,17 @@ class OrderController extends Controller
      */
     public function index()
     {
+        $limit = request('limit') ? request('limit') : 10;
 
+        $orders = Order::with([
+                            'products:id,order_id,product_id,unit_cost,quantity',
+                            'orderStatus:id,status',
+                            'orderPackage:id,status',
+                            'customer:id,first_name,last_name,phone',
+                            'deliverySerice:id,code,name,shipping_cost',
+                        ])->paginate($limit);
+
+        return response($orders, 200);
     }
 
     /**
@@ -30,16 +40,23 @@ class OrderController extends Controller
     {
         $this->authorize('customer-store');
 
-        $data = $request->validated();
+        $order = Order::create([
+            'order_status_id' => $request->get('order_status_id'),
+            'package_status_id' => $request->get('package_status_id'),
+            'delivery_service_id' => $request->get('delivery_service_id'),
+            'customer_id' => $request->get('customer_id'),
+            'note' => $request->get('note'),
+            'delivery_note' => $request->get('delivery_note'),
+            'subtotal' => $request->get('subtotal'),
+            'total' => $request->get('total'),
+        ]);
 
-        $order = Order::create($data);
-
-        foreach($data['products'] as $product){
+        foreach($request->get('products') as $product){
             OrderDetail::create([
                 'order_id' => $order->id,
-                'product_id' => $product->id,
-                'unit_cost' => $product->unit_cost,
-                'quantity' => $product->quantity
+                'product_id' => $product['product_id'],
+                'unit_cost' => $product['unit_cost'],
+                'quantity' => $product['quantity'],
             ]);
         }
 
@@ -54,7 +71,16 @@ class OrderController extends Controller
      */
     public function show(Order $order)
     {
-        //
+        $order = $order->with([
+                            'products:id,order_id,product_id,unit_cost,quantity',
+                            'orderStatus:id,status',
+                            'orderPackage:id,status',
+                            'customer:id,first_name,last_name,phone',
+                            'deliverySerice:id,code,name,shipping_cost',
+                        ])
+                        ->paginate(10);
+
+        return response($order, 200);
     }
 
     /**
@@ -64,19 +90,20 @@ class OrderController extends Controller
      * @param  \App\Models\Order  $order
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Order $order)
+    public function update(StoreRequest $request, Order $order)
     {
-        //
-    }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Order  $order
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Order $order)
-    {
-        //
+        $this->authorize('customer-update');
+
+        $order->update([
+            'order_status_id' => $request->get('order_status_id'),
+            'package_status_id' => $request->get('package_status_id'),
+            'delivery_service_id' => $request->get('delivery_service_id'),
+            'customer_id' => $request->get('customer_id'),
+            'note' => $request->get('note'),
+            'delivery_note' => $request->get('delivery_note'),
+        ]);
+
+        return response(['message' => 'Order updated successfully'], 200);
     }
 }

@@ -4,12 +4,14 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\CustomerController;
 use App\Http\Controllers\Api\CustomerDetailController;
+use App\Http\Controllers\Api\DeliveryServiceController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\PermissionController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\RoleStatisticController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\OrderController as ControllersOrderController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -47,7 +49,16 @@ Route::middleware(['auth:sanctum'])->group(function(){
     Route::apiResource('products', ProductController::class);
 
     //Orders
-    Route::apiResource('orders', OrderController::class);
+    Route::apiResource('orders', OrderController::class)->except(['destroy']);
+
+    // Route::post('messages',                    [MessageController::class, 'create'])->name('messages.create');
+    // Route::post('messages/{message}/send-sms', [MessageController::class, 'sendSms'])->name('messages.sendSms');
+
+    // Delivery Services
+    Route::get('delivery-services', [DeliveryServiceController::class, 'index'])->name('delivery-services.index');
+    Route::get('delivery-services/{deliveryService}', [DeliveryServiceController::class, 'show'])->name('delivery-services.show');
+    Route::put('delivery-services/{deliveryService}', [DeliveryServiceController::class, 'update'])->name('delivery-services.update');
+    Route::delete('delivery-services/{deliveryService}', [DeliveryServiceController::class, 'destroy'])->name('delivery-services.destroy');
 
     //Store and Update Customer
     Route::post('customer/detail', [CustomerDetailController::class, 'crud']);
@@ -63,4 +74,6 @@ Route::middleware(['auth:sanctum'])->group(function(){
     Route::get('permissions', [PermissionController::class, 'index']);
 
     Route::post('logout', [AuthController::class, 'logout']);
+
+    Route::post('auth-permissions', [AuthController::class, 'authPermissions']);
 });

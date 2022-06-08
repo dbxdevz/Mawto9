@@ -9,7 +9,12 @@ class OrderDetail extends Model
 {
     use HasFactory;
 
-    protected $table = "order_product";
+    protected $table = 'order_product';
 
     protected $guarded = [];
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class, 'product_id');
+    }
 }

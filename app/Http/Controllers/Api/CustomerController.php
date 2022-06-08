@@ -19,6 +19,8 @@ class CustomerController extends Controller
     {
         $this->authorize('customer-index');
 
+        $limit = request('limit') ? request('limit') : 10;
+
         $customers = Customer
             ::select(
                 'first_name',
@@ -31,7 +33,7 @@ class CustomerController extends Controller
                 'whatsapp'
             )
             ->with(['Country:id,name', 'City:id,name'])
-            ->paginate(10);
+            ->paginate($limit);
 
             return response($customers, 200);
     }

@@ -11,8 +11,28 @@ class Order extends Model
 
     protected $guarded = [];
 
-    public function details()
+    public function orderStatus()
     {
-        return $this->belongsToMany(OrderDetail::class);
+        return $this->belongsTo(OrderStatus::class);
+    }
+
+    public function orderPackage()
+    {
+        return $this->belongsTo(PackageStatus::class, 'package_status_id');
+    }
+
+    public function deliverySerice()
+    {
+        return $this->belongsTo(DeliveryService::class, 'delivery_service_id');
+    }
+
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class);
+    }
+
+    public function products()
+    {
+        return $this->hasMany(OrderDetail::class)->with('product:id,name');
     }
 }

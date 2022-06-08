@@ -15,10 +15,10 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('order_status_id')->nullable()->constrained()->onDelete('set null');
-            $table->foreignId('package_status_id')->nullable()->constrained()->onDelete('set null');
-            $table->foreignId('customer_id')->nullable()->constrained()->onDelete('set null');
-            $table->foreignId('delivery_id')->nullable()->constrained()->onDelete('set null');
+            $table->foreignId('order_status_id')->constrained();
+            $table->foreignId('package_status_id')->constrained();
+            $table->foreignId('customer_id')->constrained();
+            $table->foreignId('delivery_service_id')->nullable()->constrained()->onDelete('set null');
             $table->longText('note')->nullable();
             $table->longText('delivery_note')->nullable();
             $table->string('subtotal');

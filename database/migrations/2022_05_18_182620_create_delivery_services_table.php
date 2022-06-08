@@ -13,12 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('order_statuses', function (Blueprint $table) {
+        Schema::create('delivery_services', function (Blueprint $table) {
             $table->id();
-            $table->string('status');
-            $table->foreignId('order_priority_id')->nullable()->constrained()->onDelete('set null');
-            $table->boolean('status')->default(1);
-            $table->boolean('sms')->default(0);
+            $table->string('code');
+            $table->string('name');
+            $table->integer('shipping_cost');
+            $table->boolean('default')->default(false);
             $table->timestamps();
         });
     }
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('order_statuses');
+        Schema::dropIfExists('delivery_services');
     }
 };

@@ -16,7 +16,38 @@ class PackageStatusSeeder extends Seeder
     public function run()
     {
         PackageStatus::create([
-			'status' => 'Admin',
+			'status' => 'UNPACKED',
+		]);
+
+        PackageStatus::create([
+			'status' => 'PACKED',
+		]);
+        PackageStatus::create([
+			'status' => 'SHIPPED',
+		]);
+        PackageStatus::create([
+			'status' => 'DELIVERED',
+		]);
+        PackageStatus::create([
+			'status' => 'READY',
+		]);
+        PackageStatus::create([
+			'status' => 'RETURN',
+		]);
+        PackageStatus::create([
+			'status' => 'UNKNOWN',
+		]);
+        PackageStatus::create([
+			'status' => 'NO ANSWER',
+		]);
+        PackageStatus::create([
+			'status' => 'POSTPONED',
+		]);
+        PackageStatus::create([
+			'status' => 'PICKED UP',
+		]);
+        PackageStatus::create([
+			'status' => 'REJECTED',
 		]);
     }
 }

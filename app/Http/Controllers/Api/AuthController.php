@@ -39,4 +39,11 @@ class AuthController extends Controller
 
         return response(['message' => 'Auth false'], 401);
     }
+
+    public function authPermissions()
+    {
+        $permissions = auth('sanctum')->user()->permissions();
+
+        return response(['permissions' => $permissions], 200);
+    }
 }

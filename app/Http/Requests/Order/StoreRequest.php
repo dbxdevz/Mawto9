@@ -27,10 +27,14 @@ class StoreRequest extends FormRequest
         return [
             'order_status_id' => ['required'],
             'package_status_id' => ['required'],
+            'delivery_service_id' => ['required'],
             'customer_id' => ['required'],
             'note' => ['nullable'],
             'delivery_note' => ['nullable'],
             'products' => ['required'],
+            'subtotal' => ['required'],
+            'shipping_cost' => ['required'],
+            'total' => ['required'],
         ];
     }
 }

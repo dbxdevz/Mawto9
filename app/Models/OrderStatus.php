@@ -9,7 +9,7 @@ class OrderStatus extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['status', 'order_priority_id'];
+    protected $fillable = ['status', 'order_priority_id', 'status', 'sms'];
 
     public function orderPriority()
     {

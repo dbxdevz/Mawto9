@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('order_product', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('order_id')->nullable()->constrained()->onDelete('set null');
-            $table->foreignId('product_id')->nullable()->constrained()->onDelete('set null');
+            $table->foreignId('order_id')->constrained();
+            $table->foreignId('product_id')->constrained();
             $table->integer('unit_cost');
             $table->integer('quantity');
             $table->timestamps();

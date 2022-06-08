@@ -26,9 +26,10 @@ class CustomerDetailController extends Controller
 
         Customer::updateOrCreate(
                     [
-                        'phone' => $request->phone
+                        'id' => $request->id,
                     ],
                     [
+                        'phone' => $request->phone,
                         'first_name' => $request->first_name,
                         'last_name' => $request->last_name,
                         'address' => $request->address,

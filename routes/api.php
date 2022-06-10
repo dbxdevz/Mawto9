@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\CustomerController;
 use App\Http\Controllers\Api\CustomerDetailController;
 use App\Http\Controllers\Api\DeliveryServiceController;
 use App\Http\Controllers\Api\OrderController;
+use App\Http\Controllers\Api\OrderStatusController;
 use App\Http\Controllers\Api\PermissionController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\RoleController;
@@ -35,6 +36,10 @@ Route::post('login', [AuthController::class, 'login']);
 Route::post('check-auth', [AuthController::class, 'chechAuth']);
 
 Route::middleware(['auth:sanctum'])->group(function(){
+    //Profile
+    Route::get('profile', [AuthController::class, 'profile']);
+    Route::put('profile/update', [AuthController::class, 'update']);
+    Route::post('check-password', [AuthController::class, 'checkPassword']);
 
     //Roles
     Route::apiResource('roles', RoleController::class);
@@ -50,6 +55,9 @@ Route::middleware(['auth:sanctum'])->group(function(){
 
     //Orders
     Route::apiResource('orders', OrderController::class)->except(['destroy']);
+
+    //Order status
+    Route::apiResource('order-status', OrderStatusController::class);
 
     // Route::post('messages',                    [MessageController::class, 'create'])->name('messages.create');
     // Route::post('messages/{message}/send-sms', [MessageController::class, 'sendSms'])->name('messages.sendSms');

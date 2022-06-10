@@ -17,16 +17,16 @@ class OrderStatusSeeder extends Seeder
     public function run()
     {
         $priority1 = OrderPriority::create([
-            'priority' => 'priority 1'
+            'priority' => '1'
         ]);
         $priority2 = OrderPriority::create([
-            'priority' => 'priority 2'
+            'priority' => '2'
         ]);
         $priority3 = OrderPriority::create([
-            'priority' => 'priority 3'
+            'priority' => '3'
         ]);
         $priority4 = OrderPriority::create([
-            'priority' => 'priority 4'
+            'priority' => 'no call'
         ]);
 
         OrderStatus::create([

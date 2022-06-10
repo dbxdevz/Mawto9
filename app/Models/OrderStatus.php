@@ -9,7 +9,7 @@ class OrderStatus extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['status', 'order_priority_id', 'active', 'sms'];
+    protected $guarded = [];
 
     public function orderPriority()
     {

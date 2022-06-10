@@ -10,7 +10,7 @@ class OrderStatusController extends Controller
 {
     public function index()
     {
-        $orderStatus = OrderStatus::all();
+        $orderStatus = OrderStatus::with('orderPriority')->get();
 
         return response(['orderStatus' => $orderStatus], 200);
     }
@@ -21,10 +21,15 @@ class OrderStatusController extends Controller
             'status' => ['required'],
             'order_priority_id' => ['required'],
             'sms' => ['required', 'boolean'],
-            'status' => ['required', 'boolean'],
+            'active' => ['required', 'boolean'],
         ]);
 
-        OrderStatus::create($request->all());
+        OrderStatus::create([
+            'status' => $request->status,
+            'order_priority_id' => $request->order_priority_id,
+            'sms' => $request->sms,
+            'active' => $request->active,
+        ]);
 
         return response(['message' => 'Order status created successfully'], 200);
     }
@@ -35,7 +40,7 @@ class OrderStatusController extends Controller
             'status' => ['required'],
             'order_priority_id' => ['required'],
             'sms' => ['required', 'boolean'],
-            'status' => ['required', 'boolean'],
+            'active' => ['required', 'boolean'],
         ]);
 
         $orderStatus->update($request->all());

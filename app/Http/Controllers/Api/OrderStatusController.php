@@ -34,6 +34,13 @@ class OrderStatusController extends Controller
         return response(['message' => 'Order status created successfully'], 200);
     }
 
+    public function show(OrderStatus $orderStatus)
+    {
+        $orderStatus = $orderStatus->with('orderPriority')->first();
+
+        return response(['orderStatus' => $orderStatus], 200);
+    }
+
     public function update(Request $request, OrderStatus $orderStatus)
     {
         $request->validate([

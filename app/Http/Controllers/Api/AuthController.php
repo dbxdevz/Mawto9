@@ -71,7 +71,7 @@ class AuthController extends Controller
         if(Hash::check($request->old_password, auth('sanctum')->user()->password)){
 
             auth('sanctum')->user()->update([
-                'password' => $request->new_password
+                'password' => Hash::make($request->new_password),
             ]);
 
             return response(['message' => 'Password updated successfully'], 200);

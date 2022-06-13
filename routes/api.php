@@ -38,8 +38,9 @@ Route::post('check-auth', [AuthController::class, 'chechAuth']);
 Route::middleware(['auth:sanctum'])->group(function(){
     //Profile
     Route::get('profile', [AuthController::class, 'profile']);
-    Route::put('profile/update', [AuthController::class, 'update']);
-    Route::put('password/update', [AuthController::class, 'checkPassword']);
+    Route::put('profile/update', [AuthController::class, 'update'])->middleware('checkPassword');
+    Route::put('password/update', [AuthController::class, 'updatePassword'])->middleware('checkPassword');
+    Route::post('password/check', [AuthController::class, 'checkPassword']);
 
     //Roles
     Route::apiResource('roles', RoleController::class);

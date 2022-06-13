@@ -59,16 +59,25 @@ class AuthController extends Controller
         return response(['user' => $user], 200);
     }
 
-    // Update passowrd
     public function checkPassword(Request $request)
     {
+        if(Hash::check($request->password, auth('sanctum')->user()->password)){
+            return response(['message' => 'Password is correct'], 200);
+        }
+
+        return response(['message' => 'The provided credentials are incorrect.'], 422);
+    }
+
+    // Update passowrd
+    public function updatePassword(Request $request)
+    {
         $request->validate([
-            'old_password' => ['required'],
+            'password' => ['required'],
             'new_password' => ['required'],
             'conf_password' => ['required', 'same:new_password'],
         ]);
 
-        if(Hash::check($request->old_password, auth('sanctum')->user()->password)){
+        if(Hash::check($request->password, auth('sanctum')->user()->password)){
 
             auth('sanctum')->user()->update([
                 'password' => Hash::make($request->new_password),
@@ -85,6 +94,7 @@ class AuthController extends Controller
         $request->validate([
             'name' => ['required'],
             'email' => ['required', Rule::unique('users', 'email')->ignore(auth('sanctum')->id())],
+            'password' => ['required'],
         ]);
 
         auth('sanctum')->user()->update([

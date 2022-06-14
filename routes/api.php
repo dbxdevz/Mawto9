@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\CustomerController;
 use App\Http\Controllers\Api\CustomerDetailController;
 use App\Http\Controllers\Api\DeliveryServiceController;
 use App\Http\Controllers\Api\OrderController;
+use App\Http\Controllers\Api\OrderPriorityController;
 use App\Http\Controllers\Api\OrderStatusController;
 use App\Http\Controllers\Api\PermissionController;
 use App\Http\Controllers\Api\ProductController;
@@ -42,6 +43,8 @@ Route::middleware(['auth:sanctum'])->group(function(){
     Route::put('password/update', [AuthController::class, 'updatePassword'])->middleware('checkPassword');
     Route::post('password/check', [AuthController::class, 'checkPassword']);
 
+    Route::get('order/priorities', [OrderPriorityController::class, 'index']);
+    Route::get('package/priorities', [OrderPriorityController::class, 'index2']);
     //Roles
     Route::apiResource('roles', RoleController::class);
 

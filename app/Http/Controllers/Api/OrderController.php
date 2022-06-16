@@ -18,6 +18,7 @@ class OrderController extends Controller
     public function index()
     {
         $limit = request('limit') ? request('limit') : 10;
+        // $sort = request('sort') ? 'asc' : 'desc';
 
         $orders = Order::with([
                             'products:id,order_id,product_id,unit_cost,quantity',
@@ -25,7 +26,8 @@ class OrderController extends Controller
                             'orderPackage:id,status',
                             'customer:id,first_name,last_name,phone',
                             'deliverySerice:id,code,name,shipping_cost',
-                        ])->paginate($limit);
+                        ])
+                        ->paginate($limit);
 
         return response($orders, 200);
     }

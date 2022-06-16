@@ -24,7 +24,7 @@ class CustomerDetailController extends Controller
             'whatsapp' => ['nullable'],
         ]);
 
-        Customer::updateOrCreate(
+        $customer = Customer::updateOrCreate(
                     [
                         'id' => $request->id,
                     ],
@@ -39,6 +39,6 @@ class CustomerDetailController extends Controller
                     ]
                 );
 
-        return response(['message' => 'Success'], 200);
+        return response(['message' => 'Success', 'customer_id' => $customer->id], 200);
     }
 }

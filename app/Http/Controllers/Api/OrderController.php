@@ -78,7 +78,7 @@ class OrderController extends Controller
                             'customer:id,first_name,last_name,phone',
                             'deliverySerice:id,code,name,shipping_cost',
                         ])
-                        ->paginate(10);
+                        ->first();
 
         return response($order, 200);
     }

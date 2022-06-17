@@ -68,18 +68,18 @@ class ProductController extends Controller
     {
         $this->authorize('product-show');
 
-        $product = $product
-                    ->with('category:id,name')
-                    ->select(
-                        'name',
-                        'label',
-                        'code',
-                        'cost_price',
-                        'selling_price',
-                        'color',
-                        'description',
-                        'category_id'
-                    );
+        $product = Product::where('id', $product->id)
+                            ->with('category:id,name')
+                            ->select(
+                                'name',
+                                'label',
+                                'code',
+                                'cost_price',
+                                'selling_price',
+                                'color',
+                                'description',
+                                'category_id'
+                            );
 
         return response(['product' => $product], 200);
     }

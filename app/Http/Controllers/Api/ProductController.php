@@ -79,7 +79,7 @@ class ProductController extends Controller
                         'color',
                         'description',
                         'category_id'
-                    )->first();
+                    );
 
         return response(['product' => $product], 200);
     }

@@ -41,4 +41,9 @@ class CustomerDetailController extends Controller
 
         return response(['message' => 'Success', 'customer_id' => $customer->id], 200);
     }
+
+    // public function search(Request $request)
+    // {
+    //     $customer = Customer::where(['phone', 'LIKE', $request->search])->orWhere('last_name')
+    // }
 }

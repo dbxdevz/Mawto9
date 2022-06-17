@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('name');
             $table->foreignId('category_id')->nullable()->constrained()->onDelete('set null');
             $table->string('label')->nullable();
-            $table->string('code')->nullable();
+            $table->string('code')->nullable(); //quantity
             $table->float('cost_price');
             $table->float('selling_price');
             $table->string('color')->nullable();

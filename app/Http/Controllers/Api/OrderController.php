@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Order\StoreRequest;
 use App\Models\Order;
 use App\Models\OrderDetail;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
@@ -54,6 +55,11 @@ class OrderController extends Controller
         ]);
 
         foreach($request->get('products') as $product){
+            $productQuantity = Product::where('id', $product['product_id'])->first();
+
+            $productQuantity->code = $productQuantity->code - $product['quantity'];
+            $productQuantity->save();
+
             OrderDetail::create([
                 'order_id' => $order->id,
                 'product_id' => $product['product_id'],

@@ -65,6 +65,7 @@ class OrderController extends Controller
                 'product_id' => $product['product_id'],
                 'unit_cost' => $product['unit_cost'],
                 'quantity' => $product['quantity'],
+                'color' => $product['color'],
             ]);
         }
 
@@ -80,11 +81,11 @@ class OrderController extends Controller
     public function show(Order $order)
     {
         $order = $order->with([
-                            'products:id,order_id,product_id,unit_cost,quantity',
+                            'products:id,order_id,product_id,unit_cost,quantity,color',
                             'orderStatus:id,status',
                             'orderPackage:id,status',
                             'customer:id,first_name,last_name,phone',
-                            'deliverySerice:id,code,name,shipping_cost',
+                            'deliverySerice:id,name,shipping_cost',
                         ])
                         ->first();
 

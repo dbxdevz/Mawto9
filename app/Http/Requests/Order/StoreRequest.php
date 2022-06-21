@@ -32,8 +32,8 @@ class StoreRequest extends FormRequest
             'note' => ['nullable'],
             'delivery_note' => ['nullable'],
             'products' => ['required'],
-            'subtotal' => ['required'],
-            'shipping_cost' => ['required'],
+            'subtotal' => ['nullable'],
+            'shipping_cost' => ['nullable'],
             'total' => ['required'],
         ];
     }

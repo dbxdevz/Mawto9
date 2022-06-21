@@ -21,7 +21,7 @@ return new class extends Migration
             $table->foreignId('delivery_service_id')->nullable()->constrained()->onDelete('set null');
             $table->longText('note')->nullable();
             $table->longText('delivery_note')->nullable();
-            $table->string('subtotal');
+            $table->string('subtotal')->nullable();
             $table->string('shipping_cost')->default(0);
             $table->string('total');
             $table->timestamps();

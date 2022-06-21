@@ -74,6 +74,7 @@ class CustomerController extends Controller
                             'address',
                             'phone',
                             'email',
+                            'whatsapp',
                             'country_id',
                             'city_id'
                         )

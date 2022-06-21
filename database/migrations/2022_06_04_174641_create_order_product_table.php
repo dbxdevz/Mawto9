@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreignId('product_id')->constrained();
             $table->integer('unit_cost');
             $table->integer('quantity');
+            $table->longText('color')->nullable();
             $table->timestamps();
         });
     }

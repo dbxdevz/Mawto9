@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Customer;
+use App\Models\Product;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class SearchController extends Controller
@@ -40,6 +42,39 @@ class SearchController extends Controller
                         }, 'City:id,name'])->paginate($limit);
 
         return response($customers, 200);
+    }
+
+    public function products(Request $request)
+    {
+        $products = Product::where('name', 'LIKE', '%'.$request->name.'%')
+                        ->where('available', false)
+                        ->select('id', 'name', 'selling_price', 'color')
+                        ->get();
+
+        return response($products, 200);
+    }
+
+    public function users(Request $request)
+    {
+
+        $this->authorize('user-index');
+
+        $limit = request('limit') ? request('limit') : 10;
+        $searchString = $request->role;
+        $users = User
+                        ::where('name', 'LIKE', '%'.$request->name.'%')
+                        ->where('email', 'LIKE', '%'.$request->email.'%')
+                        ->whereHas('roles', function ($query) use ($searchString){
+                            $query->where('name', 'like', '%'.$searchString.'%');
+                        })
+                        ->select('id', 'name', 'email', 'created_at', 'active')
+                        ->with(['roles' => function($query) use ($searchString){
+                            $query
+                                ->where('name', 'like', '%'.$searchString.'%')
+                                ->select('id', 'name');
+                        }])->paginate($limit);
+
+        return response($users, 200);
     }
 
     public function orderCustomer(Request $request)

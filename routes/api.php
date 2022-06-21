@@ -65,6 +65,7 @@ Route::middleware(['auth:sanctum'])->group(function(){
     Route::apiResource('order-status', OrderStatusController::class);
 
     Route::get('customers-search', [SearchController::class, 'customer']);
+    Route::get('order/products-search', [SearchController::class, 'products']);
     Route::get('order/customer-search', [SearchController::class, 'orderCustomer']);
 
     // Route::post('messages',                    [MessageController::class, 'create'])->name('messages.create');

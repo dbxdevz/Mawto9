@@ -33,7 +33,6 @@ class CustomerController extends Controller
                 'city_id',
                 'whatsapp'
             )
-            ->with(['Country:id,name', 'City:id,name'])
             ->paginate($limit);
 
             return response($customers, 200);
@@ -78,7 +77,6 @@ class CustomerController extends Controller
                             'country_id',
                             'city_id'
                         )
-                        ->with(['Country:id,name', 'City:id,name'])
                         ->first()
                         ;
 

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\Api\CountryCitiesController;
 use App\Http\Controllers\Api\CustomerController;
 use App\Http\Controllers\Api\CustomerDetailController;
 use App\Http\Controllers\Api\DeliveryServiceController;
@@ -67,6 +68,8 @@ Route::middleware(['auth:sanctum'])->group(function(){
     Route::get('customers-search', [SearchController::class, 'customer']);
     Route::get('order/products-search', [SearchController::class, 'products']);
     Route::get('order/customer-search', [SearchController::class, 'orderCustomer']);
+
+    Route::get('country', [CountryCitiesController::class, 'country']);
 
     // Route::post('messages',                    [MessageController::class, 'create'])->name('messages.create');
     // Route::post('messages/{message}/send-sms', [MessageController::class, 'sendSms'])->name('messages.sendSms');

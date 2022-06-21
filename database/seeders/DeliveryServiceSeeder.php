@@ -16,7 +16,6 @@ class DeliveryServiceSeeder extends Seeder
     public function run()
     {
         DeliveryService::factory()->create([
-            'code' => 'YL',
             'name' => 'YALDINE',
             'shipping_cost' => 15,
             'default' => true,

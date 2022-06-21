@@ -20,15 +20,13 @@ class OrderStatusController extends Controller
         $request->validate([
             'status' => ['required'],
             'order_priority_id' => ['required'],
-            'sms' => ['required', 'boolean'],
-            'active' => ['required', 'boolean'],
+            'color' => ['required', 'regex:/^(#(?:[0-9a-f]{2}){2,4}|#[0-9a-f]{3}|(?:rgba?|hsla?)\((?:\d+%?(?:deg|rad|grad|turn)?(?:,|\s)+){2,3}[\s\/]*[\d\.]+%?\))$/i',]
         ]);
 
         OrderStatus::create([
             'status' => $request->status,
             'order_priority_id' => $request->order_priority_id,
-            'sms' => $request->sms,
-            'active' => $request->active,
+            'color' => $request->color,
         ]);
 
         return response(['message' => 'Order status created successfully'], 200);
@@ -46,8 +44,7 @@ class OrderStatusController extends Controller
         $request->validate([
             'status' => ['required'],
             'order_priority_id' => ['required'],
-            'sms' => ['required', 'boolean'],
-            'active' => ['required', 'boolean'],
+            'color' => ['required', 'regex:/^(#(?:[0-9a-f]{2}){2,4}|#[0-9a-f]{3}|(?:rgba?|hsla?)\((?:\d+%?(?:deg|rad|grad|turn)?(?:,|\s)+){2,3}[\s\/]*[\d\.]+%?\))$/i',]
         ]);
 
         $orderStatus->update($request->all());

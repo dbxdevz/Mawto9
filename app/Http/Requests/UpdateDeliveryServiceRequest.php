@@ -24,7 +24,6 @@ class UpdateDeliveryServiceRequest extends FormRequest
     public function rules()
     {
         return [
-            'code' => ['required', 'max:2'],
             'name' => ['required', 'max:64'],
             'shipping_cost' => ['required', 'integer'],
             'default' => ['nullable'],

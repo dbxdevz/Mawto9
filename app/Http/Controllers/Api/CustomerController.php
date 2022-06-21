@@ -68,6 +68,7 @@ class CustomerController extends Controller
 
         $customer = Customer::where('id', $request->customer)
                         ->select(
+                            'id',
                             'first_name',
                             'last_name',
                             'address',

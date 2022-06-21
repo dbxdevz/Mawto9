@@ -15,7 +15,6 @@ return new class extends Migration
     {
         Schema::create('delivery_services', function (Blueprint $table) {
             $table->id();
-            $table->string('code');
             $table->string('name');
             $table->integer('shipping_cost');
             $table->boolean('default')->default(false);

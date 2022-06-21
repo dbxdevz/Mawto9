@@ -32,6 +32,7 @@ class StoreRequset extends FormRequest
             'email' => ['email', 'unique:customers'],
             'city_id' => ['required'],
             'country_id' => ['required'],
+            'whatsapp' => ['nullable'],
         ];
     }
 }

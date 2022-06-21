@@ -35,6 +35,7 @@ class UpdateRequset extends FormRequest
             'email' => ['email', Rule::unique('customers', 'email')->ignore($customer->id)],
             'city_id' => ['required'],
             'country_id' => ['required'],
+            'whatsapp' => ['nullable'],
         ];
     }
 }

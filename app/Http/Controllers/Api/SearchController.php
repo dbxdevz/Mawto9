@@ -39,6 +39,31 @@ class SearchController extends Controller
                                 ->select('id', 'name');
                         }, 'City:id,name'])->paginate($limit);
 
-        return response($customers);
+        return response($customers, 200);
+    }
+
+    public function orderCustomer(Request $request)
+    {
+        $this->authorize('customer-index');
+
+        $customers = Customer
+                        ::where('first_name', 'LIKE', '%'.$request->search.'%')
+                        ->orWhere('last_name', 'LIKE', '%'.$request->search.'%')
+                        ->orWhere('phone', 'LIKE', '%'.$request->search.'%')
+                        ->select(
+                            'id',
+                            'first_name',
+                            'last_name',
+                            'address',
+                            'phone',
+                            'email',
+                            'country_id',
+                            'city_id',
+                            'whatsapp'
+                        )
+                        ->with(['Country:id,name', 'City:id,name'])
+                        ->get();
+
+        return response($customers, 200);
     }
 }

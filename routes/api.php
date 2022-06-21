@@ -12,6 +12,7 @@ use App\Http\Controllers\Api\PermissionController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\RoleStatisticController;
+use App\Http\Controllers\Api\SearchController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\OrderController as ControllersOrderController;
 use Illuminate\Http\Request;
@@ -62,6 +63,8 @@ Route::middleware(['auth:sanctum'])->group(function(){
 
     //Order status
     Route::apiResource('order-status', OrderStatusController::class);
+
+    Route::get('customers-search', [SearchController::class, 'customer']);
 
     // Route::post('messages',                    [MessageController::class, 'create'])->name('messages.create');
     // Route::post('messages/{message}/send-sms', [MessageController::class, 'sendSms'])->name('messages.sendSms');

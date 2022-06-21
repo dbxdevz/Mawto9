@@ -18,6 +18,7 @@ class SearchController extends Controller
         $customers = Customer
                         ::where('first_name', 'LIKE', '%'.$request->name.'%')
                         ->where('last_name', 'LIKE', '%'.$request->name.'%')
+                        ->where('phone', 'LIKE', '%'.$request->phone.'%')
                         ->whereHas('Country', function ($query) use ($searchString){
                             $query->where('name', 'like', '%'.$searchString.'%');
                         })

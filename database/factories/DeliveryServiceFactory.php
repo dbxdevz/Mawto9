@@ -17,7 +17,6 @@ class DeliveryServiceFactory extends Factory
     public function definition()
     {
         return [
-            'code' => $this->faker->randomLetter() . $this->faker->randomLetter(),
             'name' => $this->faker->word,
             'shipping_cost' => rand(0, 1500),
             'default' => true

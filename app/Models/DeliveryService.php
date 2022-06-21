@@ -11,7 +11,6 @@ class DeliveryService extends Model
     use HasFactory;
 
     protected $fillable = [
-        'code',
         'name',
         'shipping_cost',
         'default',

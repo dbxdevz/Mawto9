@@ -22,7 +22,7 @@ class OrderController extends Controller
         // $sort = request('sort') ? 'asc' : 'desc';
 
         $orders = Order::with([
-                            'products:id,order_id,product_id,unit_cost,quantity',
+                            'products:id,order_id,product_id,unit_cost,quantity,color',
                             'orderStatus:id,status',
                             'orderPackage:id,status',
                             'customer:id,first_name,last_name,phone',

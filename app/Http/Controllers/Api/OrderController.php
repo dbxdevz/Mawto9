@@ -57,7 +57,7 @@ class OrderController extends Controller
         foreach($request->get('products') as $product){
             $productQuantity = Product::where('id', $product['product_id'])->first();
 
-            $productQuantity->code = $productQuantity->code - $product['quantity'];
+            $productQuantity->code = (int)$productQuantity->code - (int)$product['quantity'];
             $productQuantity->save();
 
             OrderDetail::create([

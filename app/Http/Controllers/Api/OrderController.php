@@ -26,7 +26,7 @@ class OrderController extends Controller
                             'orderStatus:id,status',
                             'orderPackage:id,status',
                             'customer:id,first_name,last_name,phone',
-                            'deliverySerice:id,code,name,shipping_cost',
+                            'deliverySerice:id,name,shipping_cost',
                         ])
                         ->paginate($limit);
 
@@ -65,7 +65,7 @@ class OrderController extends Controller
                 'product_id' => $product['product_id'],
                 'unit_cost' => $product['unit_cost'],
                 'quantity' => $product['quantity'],
-                'color' => $product['color'],
+                'color' => $product['color'] != null ? $product['color'] : null,
             ]);
         }
 

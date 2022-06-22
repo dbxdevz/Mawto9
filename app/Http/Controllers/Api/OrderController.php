@@ -65,7 +65,7 @@ class OrderController extends Controller
                 'product_id' => $product['product_id'],
                 'unit_cost' => $product['unit_cost'],
                 'quantity' => $product['quantity'],
-                'color' => $product['color'] != null ? $product['color'] : null,
+                'color' => array_key_exists($product['color'], $product) == true ? $product['color'] : null,
             ]);
         }
 

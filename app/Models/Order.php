@@ -33,6 +33,6 @@ class Order extends Model
 
     public function products()
     {
-        return $this->hasMany(OrderDetail::class, 'product_id')->with('product:id,name');
+        return $this->hasMany(OrderDetail::class, 'order_id')->with('product:id,name');
     }
 }

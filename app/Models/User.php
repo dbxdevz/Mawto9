@@ -63,4 +63,9 @@ class User extends Authenticatable
 			->pluck('table_name')
 			->unique();
 	}
+
+    public function deliveryInfo()
+    {
+        return $this->hasOne(DeliveryMan::class);
+    }
 }

@@ -15,11 +15,11 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('name')->unique();
             $table->foreignId('category_id')->nullable()->constrained()->onDelete('set null');
             $table->string('label')->nullable();
-            $table->string('code')->nullable(); //quantity
             $table->float('cost_price');
+            $table->string('code')->nullable(); //quantity
             $table->float('selling_price');
             $table->string('color')->nullable();
             $table->longText('description')->nullable();

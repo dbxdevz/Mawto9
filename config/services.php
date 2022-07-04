@@ -31,4 +31,10 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'smsglobal' => [
+        'user' => env('SMSGLOBAL_USER'),
+        'password' => env('SMSGLOBAL_PASSWORD'),
+        'from' => env('SMSGLOBAL_FROM'),
+    ]
+
 ];

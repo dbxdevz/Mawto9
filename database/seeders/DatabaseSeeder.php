@@ -27,6 +27,8 @@ class DatabaseSeeder extends Seeder
                 PackageStatusSeeder::class,
                 DeliveryServiceSeeder::class,
                 ProductSeeder::class,
+                MessageTemplateSeeder::class,
+                DeliveryManSeeder::class,
             ]);
     }
 }

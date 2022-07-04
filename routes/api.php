@@ -5,7 +5,10 @@ use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\CountryCitiesController;
 use App\Http\Controllers\Api\CustomerController;
 use App\Http\Controllers\Api\CustomerDetailController;
+use App\Http\Controllers\Api\DeliveryManController;
 use App\Http\Controllers\Api\DeliveryServiceController;
+use App\Http\Controllers\Api\MessageController;
+use App\Http\Controllers\Api\MessageTemplateController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\OrderPriorityController;
 use App\Http\Controllers\Api\OrderStatusController;
@@ -79,6 +82,23 @@ Route::middleware(['auth:sanctum'])->group(function(){
     Route::get('delivery-services/{deliveryService}', [DeliveryServiceController::class, 'show'])->name('delivery-services.show');
     Route::put('delivery-services/{deliveryService}', [DeliveryServiceController::class, 'update'])->name('delivery-services.update');
     Route::delete('delivery-services/{deliveryService}', [DeliveryServiceController::class, 'destroy'])->name('delivery-services.destroy');
+
+    // MessageTempalte
+    Route::get('message-templates', [MessageTemplateController::class, 'index'])->name('message-templates.index');
+    Route::post('message-templates', [MessageTemplateController::class, 'store'])->name('message-templates.store');
+    Route::put('message-templates/{messageTemplate}', [MessageTemplateController::class, 'update'])->name('message-templates.update');
+    Route::delete('message-templates/{messageTemplate}', [MessageTemplateController::class, 'destroy'])->name('message-templates.destroy');
+
+    // Messages
+    Route::get('messages/{order}', [MessageController::class, 'index'])->name('messages.index');
+    Route::post('messages/send', [MessageController::class, 'send'])->name('messages.send');
+
+    // Delivery Man
+    Route::get('delivery-men', [DeliveryManController::class, 'index'])->name('delivery-men.index');
+    Route::post('delivery-men', [DeliveryManController::class, 'store'])->name('delivery-men.store');
+    Route::get('delivery-men/{deliveryMan}', [DeliveryManController::class, 'show'])->name('delivery-men.show');
+    Route::put('delivery-men/{deliveryMan}', [DeliveryManController::class, 'update'])->name('delivery-men.update');
+    Route::put('delivery-men/{id}/toggleDefault', [DeliveryManController::class, 'toggleDefault'])->name('delivery-men.toggleDefault');
 
     //Store and Update Customer
     Route::post('customer/detail', [CustomerDetailController::class, 'crud']);

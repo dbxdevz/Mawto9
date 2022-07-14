@@ -80,14 +80,14 @@ class OrderController extends Controller
      */
     public function show(Order $order)
     {
-        $order = $order->with([
-                            'products:id,order_id,product_id,unit_cost,quantity,color',
-                            'orderStatus:id,status',
-                            'orderPackage:id,status',
-                            'customer:id,first_name,last_name,phone',
-                            'deliverySerice:id,name,shipping_cost',
-                        ])
-                        ->first();
+        $order = Order::where('id', $order->id)->with([
+            'products:id,order_id,product_id,unit_cost,quantity,color',
+            'orderStatus:id,status',
+            'orderPackage:id,status',
+            'customer:id,first_name,last_name,phone',
+            'deliverySerice:id,name,shipping_cost',
+        ])
+        ->first();
 
         return response($order, 200);
     }

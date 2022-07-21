@@ -26,6 +26,11 @@ class Order extends Model
         return $this->belongsTo(DeliveryService::class, 'delivery_service_id');
     }
 
+    public function deliveryMen()
+    {
+        return $this->belongsTo(DeliveryMan::class, 'delivery_men_id');
+    }
+
     public function customer()
     {
         return $this->belongsTo(Customer::class);

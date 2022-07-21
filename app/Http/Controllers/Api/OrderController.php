@@ -27,6 +27,8 @@ class OrderController extends Controller
                             'orderPackage:id,status',
                             'customer:id,first_name,last_name,phone',
                             'deliverySerice:id,name,shipping_cost',
+                            'deliveryMen:id,code,shipping_cost,user_id',
+                            'deliveryMen.user:id,name,email'
                         ])
                         ->paginate($limit);
 
@@ -46,7 +48,8 @@ class OrderController extends Controller
         $order = Order::create([
             'order_status_id' => $request->get('order_status_id'),
             'package_status_id' => $request->get('package_status_id'),
-            'delivery_service_id' => $request->get('delivery_service_id'),
+            'delivery_service_id' => $request->get('service') == true ? $request->get('delivery_service_id') : null,
+            'delivery_men_id' => $request->get('service') == false ? $request->get('delivery_men_id') : null,
             'customer_id' => $request->get('customer_id'),
             'note' => $request->get('note'),
             'delivery_note' => $request->get('delivery_note'),
@@ -86,6 +89,8 @@ class OrderController extends Controller
             'orderPackage:id,status',
             'customer:id,first_name,last_name,phone',
             'deliverySerice:id,name,shipping_cost',
+            'deliveryMen:id,code,shipping_cost,user_id',
+            'deliveryMen.user:id,name,email'
         ])
         ->first();
 
@@ -107,7 +112,8 @@ class OrderController extends Controller
         $order->update([
             'order_status_id' => $request->get('order_status_id'),
             'package_status_id' => $request->get('package_status_id'),
-            'delivery_service_id' => $request->get('delivery_service_id'),
+            'delivery_service_id' => $request->get('service') == true ? $request->get('delivery_service_id') : null,
+            'delivery_men_id' => $request->get('service') == false ? $request->get('delivery_men_id') : null,
             'customer_id' => $request->get('customer_id'),
             'note' => $request->get('note'),
             'delivery_note' => $request->get('delivery_note'),

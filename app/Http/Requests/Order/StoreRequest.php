@@ -27,7 +27,8 @@ class StoreRequest extends FormRequest
         return [
             'order_status_id' => ['required'],
             'package_status_id' => ['required'],
-            'delivery_service_id' => ['required'],
+            'delivery_service_id' => ['nullable'],
+            'delivery_men_id' => ['nullable'],
             'customer_id' => ['required'],
             'note' => ['nullable'],
             'delivery_note' => ['nullable'],
@@ -35,6 +36,7 @@ class StoreRequest extends FormRequest
             'subtotal' => ['nullable'],
             'shipping_cost' => ['nullable'],
             'total' => ['required'],
+            'service' => ['required', 'boolean'], // 0 -> delivery men, 1 -> delivery service
         ];
     }
 }

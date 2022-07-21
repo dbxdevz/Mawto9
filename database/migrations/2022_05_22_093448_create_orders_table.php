@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreignId('package_status_id')->constrained();
             $table->foreignId('customer_id')->constrained();
             $table->foreignId('delivery_service_id')->nullable()->constrained()->onDelete('set null');
+            $table->foreignId('delivery_men_id')->nullable()->constrained('delivery_men')->onDelete('set null');
             $table->longText('note')->nullable();
             $table->longText('delivery_note')->nullable();
             $table->string('subtotal')->nullable();

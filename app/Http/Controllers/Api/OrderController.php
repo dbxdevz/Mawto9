@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Order\StoreRequest;
+use App\Http\Requests\Order\UpdateRequest;
 use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\Product;
@@ -104,7 +105,7 @@ class OrderController extends Controller
      * @param  \App\Models\Order  $order
      * @return \Illuminate\Http\Response
      */
-    public function update(StoreRequest $request, Order $order)
+    public function update(UpdateRequest $request, Order $order)
     {
 
         $this->authorize('customer-update');
@@ -114,7 +115,6 @@ class OrderController extends Controller
             'package_status_id' => $request->get('package_status_id'),
             'delivery_service_id' => $request->get('service') == true ? $request->get('delivery_service_id') : null,
             'delivery_men_id' => $request->get('service') == false ? $request->get('delivery_men_id') : null,
-            'customer_id' => $request->get('customer_id'),
             'note' => $request->get('note'),
             'delivery_note' => $request->get('delivery_note'),
         ]);

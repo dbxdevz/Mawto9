@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\CustomerController;
 use App\Http\Controllers\Api\CustomerDetailController;
 use App\Http\Controllers\Api\DeliveryManController;
 use App\Http\Controllers\Api\DeliveryServiceController;
+use App\Http\Controllers\Api\GoogleSheetController;
 use App\Http\Controllers\Api\MessageController;
 use App\Http\Controllers\Api\MessageTemplateController;
 use App\Http\Controllers\Api\OrderController;
@@ -71,6 +72,7 @@ Route::middleware(['auth:sanctum'])->group(function(){
     Route::get('customers-search', [SearchController::class, 'customer']);
     Route::get('order/products-search', [SearchController::class, 'products']);
     Route::get('order/customer-search', [SearchController::class, 'orderCustomer']);
+    Route::get('users-search', [SearchController::class, 'users']);
 
     Route::get('country', [CountryCitiesController::class, 'country']);
 
@@ -107,9 +109,11 @@ Route::middleware(['auth:sanctum'])->group(function(){
     Route::get('categories', [CategoryController::class, 'index']);
     Route::post('categories', [CategoryController::class, 'store']);
 
+
     //Role statistics
     Route::get('role/statistics', [RoleStatisticController::class, 'statistic']);
 
+    Route::post('excel', [GoogleSheetController::class, 'store']);
 
     Route::get('permissions', [PermissionController::class, 'index']);
 

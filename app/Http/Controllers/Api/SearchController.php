@@ -68,11 +68,8 @@ class SearchController extends Controller
                             $query->where('name', 'like', '%'.$searchString.'%');
                         })
                         ->select('id', 'name', 'email', 'created_at', 'active')
-                        ->with(['roles' => function($query) use ($searchString){
-                            $query
-                                ->where('name', 'like', '%'.$searchString.'%')
-                                ->select('id', 'name');
-                        }])->paginate($limit);
+                        ->with('roles')
+                        ->paginate($limit);
 
         return response($users, 200);
     }

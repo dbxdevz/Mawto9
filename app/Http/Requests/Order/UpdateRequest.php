@@ -27,7 +27,7 @@ class UpdateRequest extends FormRequest
                 'order_status_id' => ['required'],
                 'package_status_id' => ['required'],
                 'customer_id' => ['required'],
-                'delivery' => ['required'], // 0 -> delivery men, 1 -> delivery service
+                'service' => ['required'], // 0 -> delivery men, 1 -> delivery service
                 'delivery_service_id' => ['nullable'],
                 'delivery_men_id' => ['nullable'],
                 'note' => ['nullable'],

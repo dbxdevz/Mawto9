@@ -19,6 +19,9 @@ class AuthController extends Controller
                         ::where('active', true)
                         ->where('id', request()->user()->id)
                         ->first();
+            if(!$user){
+                return response(['message' => 'Your account deleted'], 200);
+            }
 
             return response(['menu' => $user->menuName(), 'token' => $user->createToken('Token')->plainTextToken]);
         }

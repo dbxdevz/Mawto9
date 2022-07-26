@@ -64,6 +64,10 @@ class UserController extends Controller
     {
         $this->authorize('user-destroy');
 
+        if($user->roles->contains('name', 'Administrator')){
+            return response(['message' => 'You can not delete this user'], 200);
+        }
+
         $user->update(['active' => false]);
 
         return response(['message' => 'User deleted successfully']);

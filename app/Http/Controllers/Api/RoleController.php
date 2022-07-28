@@ -48,10 +48,15 @@ class RoleController extends Controller
 
 		$data = $request->validated();
 
-		$role->update($data);
+        if($role->id != 1){
 
-        $role->permissions()->detach();
-		$role->permissions()->attach($data['permissions']);
+		    $role->update($data);
+
+            $role->permissions()->detach();
+            $role->permissions()->attach($data['permissions']);
+        }else{
+            return response(['message' => 'You can not update role']);
+        }
 
 		return response(['message' => 'Role updated successfully'], 200);
 	}
@@ -59,6 +64,10 @@ class RoleController extends Controller
 	public function destroy(Role $role)
 	{
 		$this->authorize('role-destroy');
+
+        if($role->id == 1 || $role->id == 2 || $role->id == 3 || $role->id == 4){
+            return response(['message' => 'Role can not be deleted'], 200);
+        }
 
 		$role->delete();
 

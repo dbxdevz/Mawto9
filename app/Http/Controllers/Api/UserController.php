@@ -17,7 +17,7 @@ class UserController extends Controller
 
         $limit = request('limit') ? request('limit') : 10;
 
-        $users = User::select('id', 'name', 'email', 'created_at', 'active')->with('roles')->paginate($limit);
+        $users = User::select('id', 'name', 'email', 'created_at', 'active', 'checkRole')->with('roles')->paginate($limit);
 
         return response(['users' => $users], 200);
     }
@@ -34,6 +34,11 @@ class UserController extends Controller
 
         $user->roles()->attach($data['roles']);
 
+        if($data['roles'][0]['role_id'] == 1){
+            $user->checkRole = true;
+            $user->save();
+        }
+
         return response(['message' => 'User created successfully'], 200);
     }
 
@@ -41,7 +46,7 @@ class UserController extends Controller
     {
         $this->authorize('user-show');
 
-        $user = User::where('id', $request->user)->select('id', 'name', 'email', 'created_at', 'active')->first();
+        $user = User::where('id', $request->user)->select('id', 'name', 'email', 'created_at', 'active', 'checkRole')->first();
 
         return response(['user' => $user], 200);
     }
@@ -50,12 +55,17 @@ class UserController extends Controller
     {
         $this->authorize('user-update');
 
+        if($user->id != 1){
+
         $data = $request->validated();
 
         $user->update($data);
 
-        $user->roles()->detach();
-        $user->roles()->attach($data['roles']);
+            $user->roles()->detach();
+            $user->roles()->attach($data['roles']);
+        }else{
+            return response(['message' => 'You can not update this user']);
+        }
 
         return response(['message' => 'User updated successfully'], 200);
     }
@@ -64,7 +74,7 @@ class UserController extends Controller
     {
         $this->authorize('user-destroy');
 
-        if($user->roles->contains('name', 'Administrator')){
+        if($user->id == 1){
             return response(['message' => 'You can not delete this user'], 200);
         }
 

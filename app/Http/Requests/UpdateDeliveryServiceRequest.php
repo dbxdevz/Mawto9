@@ -27,6 +27,7 @@ class UpdateDeliveryServiceRequest extends FormRequest
             'name' => ['required', 'max:64'],
             'shipping_cost' => ['required', 'integer'],
             'default' => ['nullable'],
+            'active' => ['required', 'boolean'],
         ];
     }
 }

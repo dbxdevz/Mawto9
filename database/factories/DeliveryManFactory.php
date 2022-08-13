@@ -18,7 +18,9 @@ class DeliveryManFactory extends Factory
     public function definition()
     {
         return [
-            'user_id' => User::factory(),
+            'user_id' => User::factory()->each(function($user){
+                $user->roles()->attach(4);
+            }),
             'code' => $this->faker->randomLetter() . $this->faker->randomLetter(),
             'shipping_cost' => rand(0, 1500),
         ];

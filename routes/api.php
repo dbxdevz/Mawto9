@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\CallController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\CountryCitiesController;
 use App\Http\Controllers\Api\CustomerController;
@@ -38,6 +39,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::post('call', [CallController::class, 'call']);
+
 Route::post('login', [AuthController::class, 'login']);
 
 Route::post('check-auth', [AuthController::class, 'chechAuth']);
@@ -73,6 +76,7 @@ Route::middleware(['auth:sanctum'])->group(function(){
     Route::get('order/products-search', [SearchController::class, 'products']);
     Route::get('order/customer-search', [SearchController::class, 'orderCustomer']);
     Route::get('users-search', [SearchController::class, 'users']);
+    Route::get('messages-search', [SearchController::class, 'messages']);
 
     Route::get('country', [CountryCitiesController::class, 'country']);
 

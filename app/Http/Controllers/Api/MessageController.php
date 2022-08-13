@@ -14,6 +14,8 @@ class MessageController extends Controller
 {
     public function index(IndexMessageRequest $request, Order $order)
     {
+        $this->authorize('messaging-index');
+
         $messageTemplates = MessageTemplate::where('type', $request->get('type'))
             ->without(['orderStatuses', 'deliveryServices'])
             ->get();
@@ -34,6 +36,8 @@ class MessageController extends Controller
 
     public function send(SendMessageRequest $request)
     {
+        $this->authorize('messaging-index');
+
         if ($request->get('type') == 'SMS') {
             $response = Http::get('https://api.smsglobal.com/http-api.php', [
                 'action' => 'sendsms',

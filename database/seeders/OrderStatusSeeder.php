@@ -4,6 +4,8 @@ namespace Database\Seeders;
 
 use App\Models\OrderPriority;
 use App\Models\OrderStatus;
+use App\Models\TimeChanceCall;
+use Carbon\Carbon;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -69,5 +71,11 @@ class OrderStatusSeeder extends Seeder
 			'status' => 'Closed',
             'order_priority_id' => $priority4->id,
 		]);
+
+
+        //time and chance for order call
+        TimeChanceCall::create([
+            'chance' => 3,
+        ]);
     }
 }

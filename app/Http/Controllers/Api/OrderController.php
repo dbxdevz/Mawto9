@@ -8,7 +8,9 @@ use App\Http\Requests\Order\UpdateRequest;
 use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\Product;
+use App\Models\TimeChanceCall;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
@@ -72,6 +74,13 @@ class OrderController extends Controller
                 'color' => isset($product['color']) == true ? $product['color'] : null,
             ]);
         }
+
+        $timeChance = TimeChanceCall::find(1);
+
+        DB::table('call_order')->insert([
+            'order_id' => $order->id,
+            'chance' => $timeChance->chance
+        ]);
 
         return response(['message' => 'Created Successfully'], 200);
     }

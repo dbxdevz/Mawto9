@@ -13,12 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('delivery_services', function (Blueprint $table) {
+        Schema::create('call_order', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->integer('shipping_cost');
-            $table->boolean('default')->default(false);
-            $table->boolean('active')->default(false);
+            $table->foreignId('order_id')->constrained()->unique();
+            $table->integer('chance');
             $table->timestamps();
         });
     }
@@ -30,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('delivery_services');
+        Schema::dropIfExists('call_order');
     }
 };

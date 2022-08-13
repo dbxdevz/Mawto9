@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Customer;
+use App\Models\MessageTemplate;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -19,8 +20,8 @@ class SearchController extends Controller
         $searchString = $request->country;
         $customers = Customer
                         ::where('first_name', 'LIKE', '%'.$request->name.'%')
-                        ->where('last_name', 'LIKE', '%'.$request->name.'%')
-                        ->where('phone', 'LIKE', '%'.$request->phone.'%')
+                        ->orWhere('last_name', 'LIKE', '%'.$request->name.'%')
+                        ->orWhere('phone', 'LIKE', '%'.$request->phone.'%')
                         ->whereHas('Country', function ($query) use ($searchString){
                             $query->where('name', 'like', '%'.$searchString.'%');
                         })
@@ -63,7 +64,7 @@ class SearchController extends Controller
         $searchString = $request->role;
         $users = User
                         ::where('name', 'LIKE', '%'.$request->name.'%')
-                        ->where('email', 'LIKE', '%'.$request->email.'%')
+                        ->orWhere('email', 'LIKE', '%'.$request->email.'%')
                         ->whereHas('roles', function ($query) use ($searchString){
                             $query->where('name', 'like', '%'.$searchString.'%');
                         })
@@ -97,5 +98,16 @@ class SearchController extends Controller
                         ->get();
 
         return response($customers, 200);
+    }
+
+    public function messages(Request $request)
+    {
+        $this->authorize('messaging-index');
+
+        $messages = MessageTemplate::where('message', 'LIKE', '%'.$request->message.'%')
+                                    ->orWhere('name', 'LIKE', '%'.$request->message.'%')
+                                    ->get();
+
+        return response($messages, 200);
     }
 }

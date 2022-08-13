@@ -13,12 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('delivery_services', function (Blueprint $table) {
+        Schema::create('time_chance_calls', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->integer('shipping_cost');
-            $table->boolean('default')->default(false);
-            $table->boolean('active')->default(false);
+            $table->integer('chance')->default(1);
             $table->timestamps();
         });
     }
@@ -30,6 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('delivery_services');
+        Schema::dropIfExists('time_chance_calls');
     }
 };

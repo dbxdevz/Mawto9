@@ -16,6 +16,11 @@ class Order extends Model
         return $this->belongsTo(OrderStatus::class);
     }
 
+    public function prority()
+    {
+        return $this->belongsTo(OrderStatus::class, 'order_status_id')->with('orderPriority');
+    }
+
     public function orderPackage()
     {
         return $this->belongsTo(PackageStatus::class, 'package_status_id');

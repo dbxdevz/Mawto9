@@ -150,6 +150,7 @@ class TransactionController extends Controller
 
             $transactionProducts = TransactionProducts::where('transaction_id', $transaction->id)
                                                       ->where('product_id', $productTran->id)
+                                                      ->where('id', $product['transaction_id'])
                                                       ->first();
 
             if(!$transactionProducts){

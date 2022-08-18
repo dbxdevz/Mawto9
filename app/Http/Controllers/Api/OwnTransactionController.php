@@ -168,5 +168,7 @@ class OwnTransactionController extends Controller
                 ]);
             }
         }
+
+        return response(['message' => 'Transaction updated successfully'], 200);
     }
 }

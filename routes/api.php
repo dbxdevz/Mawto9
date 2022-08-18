@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\OwnTransactionController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CallController;
 use App\Http\Controllers\Api\CategoryController;
@@ -19,8 +20,9 @@ use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\RoleStatisticController;
 use App\Http\Controllers\Api\SearchController;
+use App\Http\Controllers\Api\TransactionController;
+use App\Http\Controllers\Api\TransactionPayController;
 use App\Http\Controllers\Api\UserController;
-use App\Http\Controllers\OrderController as ControllersOrderController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -105,6 +107,18 @@ Route::middleware(['auth:sanctum'])->group(function(){
     Route::get('delivery-men/{deliveryMan}', [DeliveryManController::class, 'show'])->name('delivery-men.show');
     Route::put('delivery-men/{deliveryMan}', [DeliveryManController::class, 'update'])->name('delivery-men.update');
     Route::put('delivery-men/{id}/toggleDefault', [DeliveryManController::class, 'toggleDefault'])->name('delivery-men.toggleDefault');
+
+    // Transactions from provider
+    Route::apiResource('own-transactions', OwnTransactionController::class)->except(['destroy']);
+    Route::post('own-transactions/pay/{transactionId}', [TransactionPayController::class, 'store']);
+    Route::delete('own-transactions/pay/{TransactionPaymentId}', [TransactionPayController::class, 'destroy']);
+    Route::get('own-transactions/pay/index', [TransactionPayController::class, 'index']);
+
+    // Transactions from order
+    Route::apiResource('transactions', TransactionController::class)->except(['destroy']);
+    Route::post('transactions/pay/{transactionId}', [TransactionPayController::class, 'storeT']);
+    Route::delete('transactions/pay/{TransactionPaymentId}', [TransactionPayController::class, 'destroyT']);
+    Route::get('transactions/pay/index', [TransactionPayController::class, 'index']);
 
     //Store and Update Customer
     Route::post('customer/detail', [CustomerDetailController::class, 'crud']);

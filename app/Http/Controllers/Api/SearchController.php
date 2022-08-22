@@ -65,7 +65,7 @@ class SearchController extends Controller
         $users = User
                         ::where('name', 'LIKE', '%'.$request->name.'%')
                         ->orWhere('email', 'LIKE', '%'.$request->email.'%')
-                        ->whereHas('roles', function ($query) use ($searchString){
+                        ->orWhereHas('roles', function ($query) use ($searchString){
                             $query->where('name', 'like', '%'.$searchString.'%');
                         })
                         ->select('id', 'name', 'email', 'created_at', 'active')

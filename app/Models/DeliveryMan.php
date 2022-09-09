@@ -29,4 +29,9 @@ class DeliveryMan extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function orders()
+    {
+        return $this->belongsTo(Order::class, 'user_id');
+    }
 }

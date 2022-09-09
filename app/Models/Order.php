@@ -26,7 +26,7 @@ class Order extends Model
         return $this->belongsTo(PackageStatus::class, 'package_status_id');
     }
 
-    public function deliverySerice()
+    public function deliveryService()
     {
         return $this->belongsTo(DeliveryService::class, 'delivery_service_id');
     }

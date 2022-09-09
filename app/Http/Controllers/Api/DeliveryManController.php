@@ -70,6 +70,7 @@ class DeliveryManController extends Controller
         $user->update([
             'email' => $request->get('email'),
             'name' => $request->get('name'),
+            'active' => $request->get('active'),
         ]);
 
         return response([

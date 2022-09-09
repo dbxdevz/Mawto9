@@ -23,6 +23,7 @@ use App\Http\Controllers\Api\SearchController;
 use App\Http\Controllers\Api\TransactionController;
 use App\Http\Controllers\Api\TransactionPayController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\StatisticsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -132,6 +133,8 @@ Route::middleware(['auth:sanctum'])->group(function(){
     Route::get('role/statistics', [RoleStatisticController::class, 'statistic']);
 
     Route::post('excel', [GoogleSheetController::class, 'store']);
+
+    Route::get('statistics', [StatisticsController::class, 'index']);
 
     Route::get('permissions', [PermissionController::class, 'index']);
 

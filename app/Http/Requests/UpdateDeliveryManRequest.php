@@ -33,6 +33,7 @@ class UpdateDeliveryManRequest extends FormRequest
             'name' => ['required'],
             'code' => ['required'],
             'shipping_cost' => ['required', 'numeric'],
+            'active' => ['required'],
         ];
     }
 

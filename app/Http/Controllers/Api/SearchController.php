@@ -57,16 +57,16 @@ class SearchController extends Controller
 
     public function users(Request $request)
     {
-
         $this->authorize('user-index');
 
         $limit = request('limit') ? request('limit') : 10;
-        $searchString = $request->role;
+        $searchString = $request->roles;
+
         $users = User
                         ::where('name', 'LIKE', '%'.$request->name.'%')
                         ->orWhere('email', 'LIKE', '%'.$request->email.'%')
-                        ->orWhereHas('roles', function ($query) use ($searchString){
-                            $query->where('name', 'like', '%'.$searchString.'%');
+                        ->whereHas('roles', function ($query) use ($searchString){
+                            $query->where('name', '=', $searchString);
                         })
                         ->select('id', 'name', 'email', 'created_at', 'active')
                         ->with('roles')

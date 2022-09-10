@@ -33,15 +33,28 @@ class StatisticsController extends Controller
         $TranPaids = $this->getSum(TransactionProducts::class, $start, $end, null, null, 'subtotal');
 
         $topProduct = Product::find($this->getTopId(Product::class, $start, $end, 'order_product'));
-        $totalProductsCount = $this->getCount(OrderDetail::class, $start, $end, $topProduct->id, 'product_id');
-        $OrderProductId = OrderDetail::where('product_id', $topProduct->id)->first();
-        $totalProductsPrice = $this->getSum(Order::class, $start, $end, $OrderProductId->order_id, 'id', 'total');
+        $totalProductsPrice = 0;
+        $totalProductsCount = 0;
+
+        if($topProduct){
+            $OrderProductId = OrderDetail::where('product_id', $topProduct->id)->first();
+            $totalProductsPrice = $this->getSum(Order::class, $start, $end, $OrderProductId->order_id, 'id', 'total');
+            $totalProductsCount = $this->getCount(OrderDetail::class, $start, $end, $topProduct->id, 'product_id');
+        }
 
         $topCustomer = Customer::find($this->getTopId(Customer::class, $start, $end, 'orders'));
-        $CustomerOrderCount = $this->getCount(Order::class, $start, $end, 'customer_id' ,$topCustomer->id);
+        $CustomerOrderCount = 0;
+
+        if($topProduct){
+            $CustomerOrderCount = $this->getCount(Order::class, $start, $end, 'customer_id' ,$topCustomer->id);
+        }
 
         $topDelivery = DeliveryMan::find($this->getTopId(DeliveryMan::class, $start, $end, 'orders'))->load('user');
-        $deliveryOrderCount = $this->getCount(Order::class, $start, $end, 'delivery_id' ,$topDelivery->user->id);
+        $deliveryOrderCount = 0;
+
+        if($topDelivery){
+            $deliveryOrderCount = $this->getCount(Order::class, $start, $end, 'delivery_id' ,$topDelivery->user->id);
+        }
 
         return response([
             'total_orders_count' => $totalOrdersCount,

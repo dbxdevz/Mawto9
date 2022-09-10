@@ -49,10 +49,11 @@ class StatisticsController extends Controller
             $CustomerOrderCount = $this->getCount(Order::class, $start, $end, 'customer_id' ,$topCustomer->id);
         }
 
-        $topDelivery = DeliveryMan::find($this->getTopId(DeliveryMan::class, $start, $end, 'orders'))->load('user');
+        $topDelivery = DeliveryMan::find($this->getTopId(DeliveryMan::class, $start, $end, 'orders'));
         $deliveryOrderCount = 0;
 
         if($topDelivery){
+            $topDelivery = $topDelivery->load('user');
             $deliveryOrderCount = $this->getCount(Order::class, $start, $end, 'delivery_id' ,$topDelivery->user->id);
         }
 

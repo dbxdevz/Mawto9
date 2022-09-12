@@ -65,9 +65,9 @@ class SearchController extends Controller
         $limit = request('limit') ? request('limit') : 10;
 
         $role_id = $request->role;
-        // refact that without roles give users
-        $users = User::where('name', 'ilike', "%{$request->name}%")
-                     ->where('email', 'ilike', "%{$request->email}%")
+
+        $users = User::where('name', 'ILIKE', "%$request->name%")
+                     ->where('email', 'ILIKE', "%$request->email%")
                      ->whereHas('roles', function ($query) use ($role_id) {
                          return $query->where('roles.id', $role_id);
                      })

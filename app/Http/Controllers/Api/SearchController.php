@@ -21,8 +21,8 @@ class SearchController extends Controller
         $name         = strtolower($request->name);
 
 
-        $customers = Customer::whereRaw('LOWER(first_name) LIKE', '%' . $name . '%')
-                             ->orWhereRaw('LOWER(last_name) LIKE', '%' . $name . '%')
+        $customers = Customer::whereRaw('LOWER(name) LIKE (?)', ["%{$name}%"])
+                             ->orWhereRaw('LOWER(last_name) LIKE (?)', ["%{$name}%"])
                              ->orWhere('phone', 'LIKE', '%' . $request->phone . '%')
                              ->whereHas('Country', function ($query) use ($searchString) {
                                  return $query->where('name', 'LIKE', '%' . $searchString . '%');
@@ -54,7 +54,7 @@ class SearchController extends Controller
     {
         $name = strtolower($request->name);
 
-        $products = Product::whereRaw('LOWER(name) LIKE', '%' . $name . '%')
+        $products = Product::whereRaw('LOWER(name) LIKE (?)', ["%{$name}%"])
                            ->where('available', false)
                            ->select('id', 'name', 'selling_price', 'color')
                            ->get()
@@ -90,9 +90,11 @@ class SearchController extends Controller
     {
         $this->authorize('customer-index');
 
-        $customers = Customer::where('LOWER(first_name)', 'LIKE', '%' . strtolower($request->search) . '%')
-                             ->orWhere('LOWER(last_name)', 'LIKE', '%' . strtolower($request->search) . '%')
-                             ->orWhere('LOWER(phone)', 'LIKE', '%' . ($request->search) . '%')
+        $name = strtolower($request->search);
+
+        $customers = Customer::where('LOWER(name) LIKE (?)', ["%{$name}%"])
+                             ->orWhere('LOWER(last_name) LIKE (?)', ["%{$name}%"])
+                             ->orWhere('LOWER(phone) LIKE (?)', ["%{$name}%"])
                              ->select(
                                  'id',
                                  'first_name',
@@ -115,8 +117,10 @@ class SearchController extends Controller
     {
         $this->authorize('messaging-index');
 
-        $messages = MessageTemplate::where('LOWER(message)', 'LIKE', '%' . strtolower($request->message) . '%')
-                                   ->orWhere('LOWER(name)', 'LIKE', '%' . strtolower($request->message) . '%')
+        $message = strtolower($request->message);
+
+        $messages = MessageTemplate::where('LOWER(message) LIKE (?)', ["%{$message}%"])
+                                   ->orWhere('LOWER(message) LIKE (?)', ["%{$message}%"])
                                    ->get()
         ;
 

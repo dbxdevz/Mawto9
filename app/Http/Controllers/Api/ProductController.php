@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Product\StoreRequest;
 use App\Http\Requests\Product\UpdateRequest;
 use App\Models\Product;
-use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
@@ -22,21 +21,22 @@ class ProductController extends Controller
         $limit = request('limit') ? request('limit') : 10;
 
         $products = Product
-                        ::where('available', false)
-                        ->with('category:id,name')
-                        ->select(
-                            'id',
-                            'name',
-                            'label',
-                            'code',
-                            'cost_price',
-                            'selling_price',
-                            'color',
-                            'description',
-                            'available',
-                            'category_id',
-                        )
-                        ->paginate($limit);
+            ::where('available', false)
+            ->with('category:id,name')
+            ->select(
+                'id',
+                'name',
+                'label',
+                'code',
+                'cost_price',
+                'selling_price',
+                'color',
+                'description',
+                'available',
+                'category_id',
+            )
+            ->paginate($limit)
+        ;
 
         return response($products, 200);
     }
@@ -44,7 +44,8 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(StoreRequest $request)
@@ -61,7 +62,8 @@ class ProductController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Product  $product
+     * @param \App\Models\Product $product
+     *
      * @return \Illuminate\Http\Response
      */
     public function show(Product $product)
@@ -69,17 +71,19 @@ class ProductController extends Controller
         $this->authorize('product-show');
 
         $product = Product::where('id', $product->id)
-                            ->with('category:id,name')
-                            ->select(
-                                'name',
-                                'label',
-                                'code',
-                                'cost_price',
-                                'selling_price',
-                                'color',
-                                'description',
-                                'category_id'
-                            )->first();
+                          ->with('category:id,name')
+                          ->select(
+                              'name',
+                              'label',
+                              'code',
+                              'cost_price',
+                              'selling_price',
+                              'color',
+                              'description',
+                              'category_id'
+                          )
+                          ->first()
+        ;
 
         return response(['product' => $product], 200);
     }
@@ -87,8 +91,9 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Product  $product
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\Product      $product
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(UpdateRequest $request, Product $product)
@@ -105,7 +110,8 @@ class ProductController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Product  $product
+     * @param \App\Models\Product $product
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy(Product $product)

@@ -15,7 +15,9 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::select('id', 'name')->get();
+        $categories = Category::select('id', 'name')
+                              ->get()
+        ;
 
         return response(['categories' => $categories], 200);
     }
@@ -23,14 +25,16 @@ class CategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
         $request->validate([
-            'name' => ['required',]
-        ]);
+                               'name'  => ['required',],
+                               'email' => ['required', 'unique'],
+                           ]);
 
         Category::create(['name' => $request->name]);
 

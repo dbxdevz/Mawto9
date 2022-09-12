@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Role;
-use Illuminate\Http\Request;
 
 class RoleStatisticController extends Controller
 {
@@ -12,7 +11,9 @@ class RoleStatisticController extends Controller
     {
         $this->authorize('role-index');
 
-        $role = Role::withCount(['permissions', 'users'])->get();
+        $role = Role::withCount(['permissions', 'users'])
+                    ->get()
+        ;
 
         return response(['data' => $role], 200);
     }

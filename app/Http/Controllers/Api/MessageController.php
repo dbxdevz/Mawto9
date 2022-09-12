@@ -7,7 +7,6 @@ use App\Http\Requests\IndexMessageRequest;
 use App\Http\Requests\SendMessageRequest;
 use App\Models\MessageTemplate;
 use App\Models\Order;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
 class MessageController extends Controller
@@ -17,8 +16,9 @@ class MessageController extends Controller
         $this->authorize('messaging-index');
 
         $messageTemplates = MessageTemplate::where('type', $request->get('type'))
-            ->without(['orderStatuses', 'deliveryServices'])
-            ->get();
+                                           ->without(['orderStatuses', 'deliveryServices'])
+                                           ->get()
+        ;
 
         $messageTemplates->each(function ($messageTemplate) use ($order) {
             $messageTemplate->message = str($messageTemplate->message)->replace('$id', $order->id);
@@ -29,9 +29,9 @@ class MessageController extends Controller
         });
 
         return response([
-            'message' => "List of {$request->get('type')} Messages",
-            'data' => $messageTemplates,
-        ]);
+                            'message' => "List of {$request->get('type')} Messages",
+                            'data'    => $messageTemplates,
+                        ]);
     }
 
     public function send(SendMessageRequest $request)
@@ -40,23 +40,23 @@ class MessageController extends Controller
 
         if ($request->get('type') == 'SMS') {
             $response = Http::get('https://api.smsglobal.com/http-api.php', [
-                'action' => 'sendsms',
-                'user' => config('services.smsglobal.user'),
+                'action'   => 'sendsms',
+                'user'     => config('services.smsglobal.user'),
                 'password' => config('services.smsglobal.password'),
-                'from' => config('services.smsglobal.from'),
-                'to' => $request->get('to'),
-                'text' => $request->get('text'),
+                'from'     => config('services.smsglobal.from'),
+                'to'       => $request->get('to'),
+                'text'     => $request->get('text'),
             ]);
 
             if ($response->status() != 200) {
                 return response([
-                    'message' => 'Something went wrong',
-                ], 500);
+                                    'message' => 'Something went wrong',
+                                ], 500);
             }
 
             return response([
-                'message' => 'Sms sent successfully',
-            ], 200);
+                                'message' => 'Sms sent successfully',
+                            ], 200);
         }
     }
 }

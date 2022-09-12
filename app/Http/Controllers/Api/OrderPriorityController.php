@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\OrderPriority;
 use App\Models\PackageStatus;
-use Illuminate\Http\Request;
 
 class OrderPriorityController extends Controller
 {

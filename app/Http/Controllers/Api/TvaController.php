@@ -18,12 +18,12 @@ class TvaController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'tva' => ['numeric', 'required']
-        ]);
+                               'tva' => ['numeric', 'required'],
+                           ]);
 
         Tva::create([
-            'tva' => $request->tva
-        ]);
+                        'tva' => $request->tva,
+                    ]);
 
         return response(['message' => 'TVA created successfully'], 200);
     }
@@ -36,12 +36,12 @@ class TvaController extends Controller
     public function update(Tva $tva, Request $request)
     {
         $request->validate([
-            'tva' => ['numeric', 'required']
-        ]);
+                               'tva' => ['numeric', 'required'],
+                           ]);
 
         $tva->udate([
-            'tva' => $request->tva
-        ]);
+                        'tva' => $request->tva,
+                    ]);
 
         return response(['message' => 'Tva updated successfully'], 200);
     }

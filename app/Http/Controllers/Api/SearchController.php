@@ -16,41 +16,44 @@ class SearchController extends Controller
 
         $this->authorize('customer-index');
 
-        $limit = request('limit') ? request('limit') : 10;
+        $limit        = request('limit') ? request('limit') : 10;
         $searchString = $request->country;
-        $customers = Customer
-                        ::where('first_name', 'LIKE', '%'.$request->name.'%')
-                        ->orWhere('last_name', 'LIKE', '%'.$request->name.'%')
-                        ->orWhere('phone', 'LIKE', '%'.$request->phone.'%')
-                        ->whereHas('Country', function ($query) use ($searchString){
-                            $query->where('name', 'like', '%'.$searchString.'%');
-                        })
-                        ->select(
-                            'id',
-                            'first_name',
-                            'last_name',
-                            'address',
-                            'phone',
-                            'email',
-                            'country_id',
-                            'city_id',
-                            'whatsapp'
-                        )
-                        ->with(['Country' => function($query) use ($searchString){
-                            $query
-                                ->where('name', 'like', '%'.$searchString.'%')
-                                ->select('id', 'name');
-                        }, 'City:id,name'])->paginate($limit);
+        $customers    = Customer::where('first_name', 'ILIKE', '%' . $request->name . '%')
+                                ->orWhere('last_name', 'ILIKE', '%' . $request->name . '%')
+                                ->orWhere('phone', 'ILIKE', '%' . $request->phone . '%')
+                                ->whereHas('Country', function ($query) use ($searchString) {
+                                    $query->where('name', 'ILIKE', '%' . $searchString . '%');
+                                })
+                                ->select(
+                                    'id',
+                                    'first_name',
+                                    'last_name',
+                                    'address',
+                                    'phone',
+                                    'email',
+                                    'country_id',
+                                    'city_id',
+                                    'whatsapp'
+                                )
+                                ->with(['Country' => function ($query) use ($searchString) {
+                                    $query
+                                        ->where('name', 'like', '%' . $searchString . '%')
+                                        ->select('id', 'name')
+                                    ;
+                                }, 'City:id,name'])
+                                ->paginate($limit)
+        ;
 
         return response($customers, 200);
     }
 
     public function products(Request $request)
     {
-        $products = Product::where('name', 'LIKE', '%'.$request->name.'%')
-                        ->where('available', false)
-                        ->select('id', 'name', 'selling_price', 'color')
-                        ->get();
+        $products = Product::where('name', 'ILIKE', '%' . $request->name . '%')
+                           ->where('available', false)
+                           ->select('id', 'name', 'selling_price', 'color')
+                           ->get()
+        ;
 
         return response($products, 200);
     }
@@ -60,17 +63,18 @@ class SearchController extends Controller
         $this->authorize('user-index');
 
         $limit = request('limit') ? request('limit') : 10;
-        $searchString = $request->roles;
 
-        $users = User
-                        ::whereHas('roles', function ($query) use ($searchString){
-                            $query->where('roles.id', '=', $searchString);
-                        })
-                        ->where('name', 'LIKE', '%'.$request->name.'%')
-                        ->orWhere('email', 'LIKE', '%'.$request->email.'%')
-                        ->select('id', 'name', 'email', 'created_at', 'active')
-                        ->with('roles')
-                        ->paginate($limit);
+        $role_id = $request->role;
+        // refact that without roles give users
+        $users = User::where('name', 'ilike', "%{$request->name}%")
+                     ->where('email', 'ilike', "%{$request->email}%")
+                     ->whereHas('roles', function ($query) use ($role_id) {
+                         return $query->where('roles.id', $role_id);
+                     })
+                     ->select('id', 'name', 'email', 'created_at', 'active', 'role_id')
+                     ->with('roles')
+                     ->paginate($limit)
+        ;
 
         return response($users, 200);
     }
@@ -79,23 +83,23 @@ class SearchController extends Controller
     {
         $this->authorize('customer-index');
 
-        $customers = Customer
-                        ::where('first_name', 'LIKE', '%'.$request->search.'%')
-                        ->orWhere('last_name', 'LIKE', '%'.$request->search.'%')
-                        ->orWhere('phone', 'LIKE', '%'.$request->search.'%')
-                        ->select(
-                            'id',
-                            'first_name',
-                            'last_name',
-                            'address',
-                            'phone',
-                            'email',
-                            'country_id',
-                            'city_id',
-                            'whatsapp'
-                        )
-                        ->with(['Country:id,name', 'City:id,name'])
-                        ->get();
+        $customers = Customer::where('first_name', 'ILIKE', '%' . $request->search . '%')
+                             ->orWhere('last_name', 'ILIKE', '%' . $request->search . '%')
+                             ->orWhere('phone', 'ILIKE', '%' . $request->search . '%')
+                             ->select(
+                                 'id',
+                                 'first_name',
+                                 'last_name',
+                                 'address',
+                                 'phone',
+                                 'email',
+                                 'country_id',
+                                 'city_id',
+                                 'whatsapp'
+                             )
+                             ->with(['Country:id,name', 'City:id,name'])
+                             ->get()
+        ;
 
         return response($customers, 200);
     }
@@ -104,9 +108,10 @@ class SearchController extends Controller
     {
         $this->authorize('messaging-index');
 
-        $messages = MessageTemplate::where('message', 'LIKE', '%'.$request->message.'%')
-                                    ->orWhere('name', 'LIKE', '%'.$request->message.'%')
-                                    ->get();
+        $messages = MessageTemplate::where('message', 'ILIKE', '%' . $request->message . '%')
+                                   ->orWhere('name', 'ILIKE', '%' . $request->message . '%')
+                                   ->get()
+        ;
 
         return response($messages, 200);
     }

@@ -18,8 +18,9 @@ class TransactionController extends Controller
         $limit = request('limit') ? request('limit') : 10;
 
         $transactions = Transaction::select('id', 'created_at', 'first_name', 'last_name', 'total')
-                                    ->with('transactionProducts:quantity,product,subtotal,transaction_id')
-                                    ->paginate($limit);
+                                   ->with('transactionProducts:quantity,product,subtotal,transaction_id')
+                                   ->paginate($limit)
+        ;
 
         return response($transactions, 200);
     }
@@ -27,7 +28,8 @@ class TransactionController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -35,51 +37,57 @@ class TransactionController extends Controller
         $this->authorize('transaction-store');
 
         $request->validate([
-            'first_name' => ['required', 'max:255'],
-            'last_name' => ['required', 'max:255'],
-            'phone' => ['required', 'max:255'],
-            'email' => ['required', 'max:255', 'email'],
-            'address' => ['nullable'],
-            'tva_id' => ['required'],
-            'note' => ['nullable'],
-            'products' => ['required'],
-        ]);
+                               'first_name' => ['required', 'max:255'],
+                               'last_name'  => ['required', 'max:255'],
+                               'phone'      => ['required', 'max:255'],
+                               'email'      => ['required', 'max:255', 'email'],
+                               'address'    => ['nullable'],
+                               'tva_id'     => ['required'],
+                               'note'       => ['nullable'],
+                               'products'   => ['required'],
+                           ]);
 
         $subTotal = 0;
-        $total = 0;
+        $total    = 0;
 
-        foreach($request->products as $product){
-            $productTran = Product::where('id', $product['product_id'])->first();
+        foreach ($request->products as $product) {
+            $productTran = Product::where('id', $product['product_id'])
+                                  ->first()
+            ;
 
             $subTotal = $subTotal + $productTran->cost_price * $product['quantity'];
         }
 
-        $tva = Tva::where('id', $request->tva_id)->first();
+        $tva = Tva::where('id', $request->tva_id)
+                  ->first()
+        ;
 
         $total = $subTotal + ($tva->tva * $subTotal / 100);
 
         $transaction = Transaction::create([
-            'first_name' => $request->first_name,
-            'last_name' => $request->last_name,
-            'phone' => $request->phone,
-            'email' => $request->email,
-            'address' => $request->address,
-            'tva_id' => $request->tva_id,
-            'note' => $request->note,
-            'subTotal' => $subTotal,
-            'total' => $total,
-        ]);
+                                               'first_name' => $request->first_name,
+                                               'last_name'  => $request->last_name,
+                                               'phone'      => $request->phone,
+                                               'email'      => $request->email,
+                                               'address'    => $request->address,
+                                               'tva_id'     => $request->tva_id,
+                                               'note'       => $request->note,
+                                               'subTotal'   => $subTotal,
+                                               'total'      => $total,
+                                           ]);
 
-        foreach($request->products as $product){
-            $productTran = Product::where('id', $product['product_id'])->first();
+        foreach ($request->products as $product) {
+            $productTran = Product::where('id', $product['product_id'])
+                                  ->first()
+            ;
 
             TransactionProducts::create([
-                'transaction_id' => $transaction->id,
-                'product_id' => $productTran->id,
-                'quantity' => $product['quantity'],
-                'subtotal' => $productTran->cost_price * $product['quantity'],
-                'product' => $productTran->name
-            ]);
+                                            'transaction_id' => $transaction->id,
+                                            'product_id'     => $productTran->id,
+                                            'quantity'       => $product['quantity'],
+                                            'subtotal'       => $productTran->cost_price * $product['quantity'],
+                                            'product'        => $productTran->name,
+                                        ]);
         }
 
         return response(['message' => 'Transaction created successfully'], 200);
@@ -88,7 +96,8 @@ class TransactionController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\OwnTransaction  $ownTransaction
+     * @param \App\Models\OwnTransaction $ownTransaction
+     *
      * @return \Illuminate\Http\Response
      */
     public function show(Transaction $transaction)
@@ -103,8 +112,9 @@ class TransactionController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\OwnTransaction  $ownTransaction
+     * @param \Illuminate\Http\Request   $request
+     * @param \App\Models\OwnTransaction $ownTransaction
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Transaction $transaction)
@@ -112,55 +122,62 @@ class TransactionController extends Controller
         $this->authorize('transaction-update');
 
         $request->validate([
-            'first_name' => ['required', 'max:255'],
-            'last_name' => ['required', 'max:255'],
-            'phone' => ['required', 'max:255'],
-            'email' => ['required', 'max:255', 'email'],
-            'address' => ['nullable'],
-            'note' => ['nullable'],
-            'products' => ['required'],
-        ]);
+                               'first_name' => ['required', 'max:255'],
+                               'last_name'  => ['required', 'max:255'],
+                               'phone'      => ['required', 'max:255'],
+                               'email'      => ['required', 'max:255', 'email'],
+                               'address'    => ['nullable'],
+                               'note'       => ['nullable'],
+                               'products'   => ['required'],
+                           ]);
 
         $subTotal = 0;
-        $total = 0;
+        $total    = 0;
 
-        foreach($request->products as $product){
-            $productTran = Product::where('id', $product['product_id'])->first();
+        foreach ($request->products as $product) {
+            $productTran = Product::where('id', $product['product_id'])
+                                  ->first()
+            ;
 
             $subTotal = $subTotal + $productTran->cost_price * $product['quantity'];
         }
 
-        $tva = Tva::where('id', $transaction->tva_id)->first();
+        $tva = Tva::where('id', $transaction->tva_id)
+                  ->first()
+        ;
 
         $total = $subTotal + ($tva->tva * $subTotal / 100);
 
         $transaction->update([
-            'first_name' => $request->first_name,
-            'last_name' => $request->last_name,
-            'phone' => $request->phone,
-            'email' => $request->email,
-            'address' => $request->address,
-            'note' => $request->note,
-            'subTotal' => $subTotal,
-            'total' => $total,
-        ]);
+                                 'first_name' => $request->first_name,
+                                 'last_name'  => $request->last_name,
+                                 'phone'      => $request->phone,
+                                 'email'      => $request->email,
+                                 'address'    => $request->address,
+                                 'note'       => $request->note,
+                                 'subTotal'   => $subTotal,
+                                 'total'      => $total,
+                             ]);
 
-        foreach($request->products as $product){
-            $productTran = Product::where('id', $product['product_id'])->first();
+        foreach ($request->products as $product) {
+            $productTran = Product::where('id', $product['product_id'])
+                                  ->first()
+            ;
 
             $transactionProducts = TransactionProducts::where('transaction_id', $transaction->id)
                                                       ->where('product_id', $productTran->id)
                                                       ->where('id', $product['transaction_id'])
-                                                      ->first();
+                                                      ->first()
+            ;
 
-            if(!$transactionProducts){
+            if (!$transactionProducts) {
                 TransactionProducts::create([
-                    'transaction_id' => $transaction->id,
-                    'product_id' => $productTran->id,
-                    'quantity' => $product['quantity'],
-                    'subtotal' => $productTran->cost_price * $product['quantity'],
-                    'product' => $productTran->name
-                ]);
+                                                'transaction_id' => $transaction->id,
+                                                'product_id'     => $productTran->id,
+                                                'quantity'       => $product['quantity'],
+                                                'subtotal'       => $productTran->cost_price * $product['quantity'],
+                                                'product'        => $productTran->name,
+                                            ]);
             }
 
             return response(['message' => 'Transaction updated successfully'], 200);

@@ -11,7 +11,9 @@ class CountryCitiesController extends Controller
     public function country(Request $request)
     {
         $countries = Country::where('name', 'LIKE', "%$request->name%")
-                        ->with(['City:id,name,country_id'])->get();
+                            ->with(['City:id,name,country_id'])
+                            ->get()
+        ;
 
         return response($countries, 200);
     }

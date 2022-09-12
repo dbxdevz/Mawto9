@@ -33,15 +33,17 @@ class CustomerController extends Controller
                 'city_id',
                 'whatsapp'
             )
-            ->paginate($limit);
+            ->paginate($limit)
+        ;
 
-            return response($customers, 200);
+        return response($customers, 200);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(StoreRequset $request)
@@ -58,7 +60,8 @@ class CustomerController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Customer  $customer
+     * @param \App\Models\Customer $customer
+     *
      * @return \Illuminate\Http\Response
      */
     public function show(Request $request)
@@ -66,19 +69,19 @@ class CustomerController extends Controller
         $this->authorize('customer-show');
 
         $customer = Customer::where('id', $request->customer)
-                        ->select(
-                            'id',
-                            'first_name',
-                            'last_name',
-                            'address',
-                            'phone',
-                            'email',
-                            'whatsapp',
-                            'country_id',
-                            'city_id'
-                        )
-                        ->first()
-                        ;
+                            ->select(
+                                'id',
+                                'first_name',
+                                'last_name',
+                                'address',
+                                'phone',
+                                'email',
+                                'whatsapp',
+                                'country_id',
+                                'city_id'
+                            )
+                            ->first()
+        ;
 
         return response(['customer' => $customer], 200);
     }
@@ -86,8 +89,9 @@ class CustomerController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Customer  $customer
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\Customer     $customer
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(UpdateRequset $request, Customer $customer)
@@ -104,7 +108,8 @@ class CustomerController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Customer  $customer
+     * @param \App\Models\Customer $customer
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy(Customer $customer)

@@ -10,21 +10,21 @@ class DeliveryServiceController extends Controller
 {
     public function index()
     {
-        $limit = request('limit') ? request('limit') : 10;
+        $limit           = request('limit') ? request('limit') : 10;
         $deliveryService = DeliveryService::paginate($limit);
 
         return response([
-            'message' => 'List of Delivery Services',
-            'data' => $deliveryService,
-        ], 200);
+                            'message' => 'List of Delivery Services',
+                            'data'    => $deliveryService,
+                        ], 200);
     }
 
     public function show(DeliveryService $deliveryService)
     {
         return response([
-            'message' => 'Delivery Service',
-            'data' => $deliveryService,
-        ], 200);
+                            'message' => 'Delivery Service',
+                            'data'    => $deliveryService,
+                        ], 200);
     }
 
     public function update(UpdateDeliveryServiceRequest $request, DeliveryService $deliveryService)
@@ -32,9 +32,9 @@ class DeliveryServiceController extends Controller
         $deliveryService->update($request->validated());
 
         return response([
-            'message' => 'Delivery Service updated successfully',
-            'data' => $deliveryService,
-        ], 200);
+                            'message' => 'Delivery Service updated successfully',
+                            'data'    => $deliveryService,
+                        ], 200);
     }
 
     public function destroy(DeliveryService $deliveryService)
@@ -42,7 +42,7 @@ class DeliveryServiceController extends Controller
         $deliveryService->delete();
 
         return response([
-            'message' => 'Delivery Service deleted successfully',
-        ], 200);
+                            'message' => 'Delivery Service deleted successfully',
+                        ], 200);
     }
 }

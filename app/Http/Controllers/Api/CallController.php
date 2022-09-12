@@ -3,8 +3,6 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Order;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -15,15 +13,17 @@ class CallController extends Controller
         // $this->authorize('order-index');
 
         $orders = DB::table('orders')
-                    ->join('order_statuses','orders.order_status_id', '=', 'order_statuses.id')
-                    ->join('package_statuses','orders.package_status_id', '=', 'package_statuses.id')
-                    ->join('order_priorities', function ($join){
+                    ->join('order_statuses', 'orders.order_status_id', '=', 'order_statuses.id')
+                    ->join('package_statuses', 'orders.package_status_id', '=', 'package_statuses.id')
+                    ->join('order_priorities', function ($join) {
                         $join->on('order_priorities.id', '=', 'order_statuses.order_priority_id')
-                             ->where('order_statuses.order_priority_id', '!=', 4);
+                             ->where('order_statuses.order_priority_id', '!=', 4)
+                        ;
                     })
-                    ->join('call_order', function($join){
+                    ->join('call_order', function ($join) {
                         $join->on('call_order.order_id', '=', 'orders.id')
-                             ->where('call_order.chance', '>', 0);
+                             ->where('call_order.chance', '>', 0)
+                        ;
                     })
                     ->join('customers', 'orders.customer_id', '=', 'customers.id')
                     ->select(
@@ -38,16 +38,21 @@ class CallController extends Controller
                     ->orderBy('call_order.chance', 'desc')
                     ->orderBy('orders.created_at')
                     ->take(1)
-                    ->get();
+                    ->get()
+        ;
 
         return response($orders, 200);
     }
 
-    public function endCall(Request $requset)
+    public function endCall(Request $request)
     {
-        $callOrder = DB::table('call_order')->where('order_id', $requset->order_id)->first();
+        $callOrder = DB::table('call_order')
+                       ->where('order_id', $request->order_id)
+                       ->first()
+        ;
 
-        $callOrder->chance = $callOrder->chance - 1;
+        $callOrder->chance  = $callOrder->chance - 1;
+        $callOrder->user_id = auth('sanctum')->id();
 
         $callOrder->save();
     }

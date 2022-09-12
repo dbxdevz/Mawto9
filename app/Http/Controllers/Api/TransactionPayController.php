@@ -16,7 +16,9 @@ class TransactionPayController extends Controller
     {
         $this->authorize('transaction-index');
 
-        $payMethods = PaymentMethod::select('id', 'method')->get();
+        $payMethods = PaymentMethod::select('id', 'method')
+                                   ->get()
+        ;
 
         return response(['payMethods' => $payMethods], 200);
     }
@@ -26,24 +28,29 @@ class TransactionPayController extends Controller
         $this->authorize('transaction-store');
 
         $request->validate([
-            'amount' => ['required'],
-            'payment_method_id' => ['required'],
-            'pay_note'  => ['nullable'],
-        ]);
+                               'amount'            => ['required'],
+                               'payment_method_id' => ['required'],
+                               'pay_note'          => ['nullable'],
+                           ]);
 
-        $transaction = OwnTransaction::where('id', $request->transactionId)->first();
-        $transactionPayments = TransactionPayment::where('own_transaction_id', $request->transactionId)->get()->sum('amount');
+        $transaction         = OwnTransaction::where('id', $request->transactionId)
+                                             ->first()
+        ;
+        $transactionPayments = TransactionPayment::where('own_transaction_id', $request->transactionId)
+                                                 ->get()
+                                                 ->sum('amount')
+        ;
 
-        if($transaction->total < $request->amount or $transactionPayments + $request->amount > $transaction->total){
+        if ($transaction->total < $request->amount or $transactionPayments + $request->amount > $transaction->total) {
             return response(['message' => 'Total paid must not be greater than the total amount'], 418);
         }
 
         TransactionPayment::create([
-            'own_transaction_id' => $request->transactionId,
-            'amount' => $request->amount,
-            'payment_method_id' => $request->payment_method_id,
-            'pay_note' => $request->pay_note,
-        ]);
+                                       'own_transaction_id' => $request->transactionId,
+                                       'amount'             => $request->amount,
+                                       'payment_method_id'  => $request->payment_method_id,
+                                       'pay_note'           => $request->pay_note,
+                                   ]);
 
         return response(['message' => 'Transaction pay created successfully'], 200);
     }
@@ -52,7 +59,9 @@ class TransactionPayController extends Controller
     {
         $this->authorize('transaction-destroy');
 
-        $transactionPayment = TransactionPayment::where('id', $request->TransactionPaymentId)->first();
+        $transactionPayment = TransactionPayment::where('id', $request->TransactionPaymentId)
+                                                ->first()
+        ;
         $transactionPayment->delete();
 
         return response(['message' => 'Deleted successfully'], 200);
@@ -63,24 +72,29 @@ class TransactionPayController extends Controller
         $this->authorize('transaction-store');
 
         $request->validate([
-            'amount' => ['required'],
-            'payment_method_id' => ['required'],
-            'pay_note'  => ['nullable'],
-        ]);
+                               'amount'            => ['required'],
+                               'payment_method_id' => ['required'],
+                               'pay_note'          => ['nullable'],
+                           ]);
 
-        $transaction = Transaction::where('id', $request->transactionId)->first();
-        $transactionPayments = TransactionPayment::where('transaction_id', $request->transactionId)->get()->sum('amount');
+        $transaction         = Transaction::where('id', $request->transactionId)
+                                          ->first()
+        ;
+        $transactionPayments = TransactionPayment::where('transaction_id', $request->transactionId)
+                                                 ->get()
+                                                 ->sum('amount')
+        ;
 
-        if($transaction->total < $request->amount or $transactionPayments + $request->amount > $transaction->total){
+        if ($transaction->total < $request->amount or $transactionPayments + $request->amount > $transaction->total) {
             return response(['message' => 'Total paid must not be greater than the total amount'], 418);
         }
 
         TransactionPayment::create([
-            'transaction_id' => $request->transactionId,
-            'amount' => $request->amount,
-            'payment_method_id' => $request->payment_method_id,
-            'pay_note' => $request->pay_note,
-        ]);
+                                       'transaction_id'    => $request->transactionId,
+                                       'amount'            => $request->amount,
+                                       'payment_method_id' => $request->payment_method_id,
+                                       'pay_note'          => $request->pay_note,
+                                   ]);
 
         return response(['message' => 'Transaction pay created successfully'], 200);
     }
@@ -89,7 +103,9 @@ class TransactionPayController extends Controller
     {
         $this->authorize('transaction-destroy');
 
-        $transactionPayment = TransactionPayment::where('id', $request->TransactionPaymentId)->first();
+        $transactionPayment = TransactionPayment::where('id', $request->TransactionPaymentId)
+                                                ->first()
+        ;
         $transactionPayment->delete();
 
         return response(['message' => 'Deleted successfully'], 200);

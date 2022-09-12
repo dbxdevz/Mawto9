@@ -74,7 +74,7 @@ class SearchController extends Controller
         $email   = strtolower($request->email);
 
         $users = User::whereRaw('LOWER(name) LIKE (?)', ["%{$name}%"])
-                     ->whereRaw('LOWER(email) LIKE', ["%{$email}%"])
+                     ->whereRaw('LOWER(email) LIKE (?)', ["%{$email}%"])
                      ->whereHas('roles', function ($query) use ($role_id) {
                          return $query->where('roles.id', $role_id);
                      })

@@ -110,7 +110,7 @@ class OrderController extends Controller
                                  'orderStatus:id,status',
                                  'orderPackage:id,status',
                                  'customer:id,first_name,last_name,phone',
-                                 'deliverySerice:id,name,shipping_cost',
+                                 'deliveryService:id,name,shipping_cost',
                                  'deliveryMen:id,code,shipping_cost,user_id',
                                  'deliveryMen.user:id,name,email',
                              ])

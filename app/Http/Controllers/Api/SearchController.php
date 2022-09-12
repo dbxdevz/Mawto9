@@ -119,8 +119,8 @@ class SearchController extends Controller
 
         $message = strtolower($request->message);
 
-        $messages = MessageTemplate::where('LOWER(message) LIKE (?)', ["%{$message}%"])
-                                   ->orWhere('LOWER(message) LIKE (?)', ["%{$message}%"])
+        $messages = MessageTemplate::whereRaw('LOWER(message) LIKE (?)', ["%{$message}%"])
+                                   ->orWhereRaw('LOWER(message) LIKE (?)', ["%{$message}%"])
                                    ->get()
         ;
 

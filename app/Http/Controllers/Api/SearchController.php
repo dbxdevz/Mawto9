@@ -78,7 +78,7 @@ class SearchController extends Controller
                      ->whereHas('roles', function ($query) use ($role_id) {
                          return $query->where('roles.id', $role_id);
                      })
-                     ->select('id', 'name', 'email', 'created_at', 'active', 'role_id')
+                     ->select('id', 'name', 'email', 'created_at', 'active')
                      ->with('roles')
                      ->paginate($limit)
         ;

@@ -21,8 +21,8 @@ class SearchController extends Controller
         $name         = strtolower($request->name);
 
 
-        $customers = Customer::where('LOWER(first_name)', 'LIKE', '%' . $name . '%')
-                             ->orWhere('LOWER(last_name)', 'LIKE', '%' . $name . '%')
+        $customers = Customer::whereRaw('LOWER(first_name) LIKE', '%' . $name . '%')
+                             ->orWhereRaw('LOWER(last_name) LIKE', '%' . $name . '%')
                              ->orWhere('phone', 'LIKE', '%' . $request->phone . '%')
                              ->whereHas('Country', function ($query) use ($searchString) {
                                  return $query->where('name', 'LIKE', '%' . $searchString . '%');
@@ -54,7 +54,7 @@ class SearchController extends Controller
     {
         $name = strtolower($request->name);
 
-        $products = Product::where('LOWER(name)', 'LIKE', '%' . $name . '%')
+        $products = Product::whereRaw('LOWER(name) LIKE', '%' . $name . '%')
                            ->where('available', false)
                            ->select('id', 'name', 'selling_price', 'color')
                            ->get()
@@ -73,8 +73,8 @@ class SearchController extends Controller
         $name    = strtolower($request->name);
         $email   = strtolower($request->email);
 
-        $users = User::where('LOWER(name)', 'LIKE', "%$name%")
-                     ->where('LOWER(email)', 'LIKE', "%$email%")
+        $users = User::whereRaw('LOWER(name) LIKE', "%$name%")
+                     ->whereRaw('LOWER(email) LIKE', "%$email%")
                      ->whereHas('roles', function ($query) use ($role_id) {
                          return $query->where('roles.id', $role_id);
                      })

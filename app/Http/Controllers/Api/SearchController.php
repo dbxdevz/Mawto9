@@ -21,7 +21,7 @@ class SearchController extends Controller
         $name         = strtolower($request->name);
 
 
-        $customers = Customer::whereRaw('LOWER(name) LIKE (?)', ["%{$name}%"])
+        $customers = Customer::whereRaw('LOWER(first_name) LIKE (?)', ["%{$name}%"])
                              ->orWhereRaw('LOWER(last_name) LIKE (?)', ["%{$name}%"])
                              ->orWhere('phone', 'LIKE', '%' . $request->phone . '%')
                              ->whereHas('Country', function ($query) use ($searchString) {

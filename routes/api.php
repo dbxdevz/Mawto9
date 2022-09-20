@@ -25,6 +25,8 @@ use App\Http\Controllers\Api\StatisticsController;
 use App\Http\Controllers\Api\TransactionController;
 use App\Http\Controllers\Api\TransactionPayController;
 use App\Http\Controllers\Api\UserController;
+use App\Models\City;
+use App\Models\Country;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -44,6 +46,31 @@ Route::middleware('auth:sanctum')
          return $request->user();
      })
 ;
+
+Route::get('city', function () {
+    $cities = \Illuminate\Support\Facades\Http::get('https://countriesnow.space/api/v0.1/countries')
+                                              ->body()
+    ;
+
+    $countries = ["Algeria", "Saudi arabia", "United arab emirate", "Qatar", "Oman", "Bahrain", "Iraq", "lebanon", "Kuwait", "Egypt"];
+
+    $cities = json_decode($cities, true);
+    foreach ($countries as $country) {
+        foreach ($cities['data'] as $city) {
+            if (in_array($city['country'], $countries)) {
+                $countr = Country::updateOrCreate(['name' => $country], [
+                    'name' => $country,
+                ]);
+                foreach ($city['cities'] as $cit) {
+                    City::create([
+                                     'name'       => $cit,
+                                     'country_id' => $countr->id,
+                                 ]);
+                }
+            }
+        }
+    }
+});
 
 Route::post('call', [CallController::class, 'call']);
 

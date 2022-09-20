@@ -45,8 +45,6 @@ Route::middleware('auth:sanctum')
      })
 ;
 
-Route::get('dashboard', [DashboardController::class, 'index']);
-
 Route::post('call', [CallController::class, 'call']);
 
 Route::post('login', [AuthController::class, 'login']);
@@ -181,6 +179,8 @@ Route::middleware(['auth:sanctum'])
          Route::post('excel', [GoogleSheetController::class, 'store']);
 
          Route::get('statistics', [StatisticsController::class, 'index']);
+
+         Route::get('dashboard', [DashboardController::class, 'index']);
 
          Route::get('permissions', [PermissionController::class, 'index']);
 

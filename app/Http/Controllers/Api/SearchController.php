@@ -72,13 +72,21 @@ class SearchController extends Controller
         $role_id = $request->role;
         $name    = strtolower($request->name);
         $email   = strtolower($request->email);
+        if ($role_id or $name or $email) {
+            $users = User::whereRaw('LOWER(name) LIKE (?)', ["%{$name}%"])
+                         ->whereRaw('LOWER(email) LIKE (?)', ["%{$email}%"])
+                         ->whereHas('roles', function ($query) use ($role_id) {
+                             return $query->where('roles.id', $role_id);
+                         })
+                         ->select('id', 'name', 'email', 'created_at', 'active')
+                         ->with('roles')
+                         ->paginate($limit)
+            ;
 
-        $users = User::whereRaw('LOWER(name) LIKE (?)', ["%{$name}%"])
-                     ->whereRaw('LOWER(email) LIKE (?)', ["%{$email}%"])
-                     ->whereHas('roles', function ($query) use ($role_id) {
-                         return $query->where('roles.id', $role_id);
-                     })
-                     ->select('id', 'name', 'email', 'created_at', 'active')
+            return response($users, 200);
+        }
+
+        $users = User::select('id', 'name', 'email', 'created_at', 'active', 'checkRole')
                      ->with('roles')
                      ->paginate($limit)
         ;

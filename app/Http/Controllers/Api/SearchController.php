@@ -127,11 +127,34 @@ class SearchController extends Controller
 
         $message = strtolower($request->message);
 
-        $messages = MessageTemplate::whereRaw('LOWER(message) LIKE (?)', ["%{$message}%"])
-                                   ->orWhereRaw('LOWER(message) LIKE (?)', ["%{$message}%"])
-                                   ->get()
+        if ($message) {
+            $messages = MessageTemplate::whereRaw('LOWER(message) LIKE (?)', ["%{$message}%"])
+                                       ->orWhereRaw('LOWER(message) LIKE (?)', ["%{$message}%"])
+                                       ->get()
+            ;
+
+            return response([
+                                'message' => "List of {$request->get('type')} Messages",
+                                'data'    => $messages,
+                            ]);
+        }
+
+        $messageTemplates = MessageTemplate::where('type', $request->get('type'))
+                                           ->without(['orderStatuses', 'deliveryServices'])
+                                           ->get()
         ;
 
-        return response($messages, 200);
+        $messageTemplates->each(function ($messageTemplate) use ($order) {
+            $messageTemplate->message = str($messageTemplate->message)->replace('$id', $order->id);
+            $messageTemplate->message = str($messageTemplate->message)->replace('$name', $order->customer->full_name);
+            $messageTemplate->message = str($messageTemplate->message)->replace('$product', 'Some product');
+            $messageTemplate->message = str($messageTemplate->message)->replace('$total', 'Some total');
+            $messageTemplate->message = str($messageTemplate->message)->replace('$code', 'Some tracker code');
+        });
+
+        return response([
+                            'message' => "List of {$request->get('type')} Messages",
+                            'data'    => $messageTemplates,
+                        ]);
     }
 }

@@ -32,6 +32,8 @@ class DeliveryManController extends Controller
                                  'name'     => $request->get('name'),
                                  'email'    => $request->get('email'),
                                  'password' => Hash::make($request->get('password')),
+                                 'role_id'  => Role::where('name', '=', 'Courier')
+                                                   ->first()->id,
                              ]);
 
         $user->roles()

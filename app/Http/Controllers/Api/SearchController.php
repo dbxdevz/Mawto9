@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Customer;
 use App\Models\MessageTemplate;
+use App\Models\Order;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -121,7 +122,7 @@ class SearchController extends Controller
         return response($customers, 200);
     }
 
-    public function messages(Request $request)
+    public function messages(Request $request, Order $order)
     {
         $this->authorize('messaging-index');
 

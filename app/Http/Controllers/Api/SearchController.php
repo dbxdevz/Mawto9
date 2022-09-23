@@ -129,33 +129,22 @@ class SearchController extends Controller
         $message = strtolower($request->message);
 
         if ($message) {
-            $messages = MessageTemplate::whereRaw('LOWER(message) LIKE (?)', ["%{$message}%"])
-                                       ->orWhereRaw('LOWER(message) LIKE (?)', ["%{$message}%"])
-                                       ->get()
+            $messageTemplates = MessageTemplate::whereRaw('LOWER(message) LIKE (?)', ["%{$message}%"])
+                                               ->orWhereRaw('LOWER(message) LIKE (?)', ["%{$message}%"])
+                                               ->get()
             ;
 
             return response([
-                                'message' => "List of {$request->get('type')} Messages",
-                                'data'    => $messages,
+                                'message' => "List of Message Templates",
+                                'data'    => $messageTemplates,
                             ]);
         }
 
-        $messageTemplates = MessageTemplate::where('type', $request->get('type'))
-                                           ->without(['orderStatuses', 'deliveryServices'])
-                                           ->get()
-        ;
-
-        $messageTemplates->each(function ($messageTemplate) use ($order) {
-            $messageTemplate->message = str($messageTemplate->message)->replace('$id', $order->id);
-            $messageTemplate->message = str($messageTemplate->message)->replace('$name', $order->customer->full_name);
-            $messageTemplate->message = str($messageTemplate->message)->replace('$product', 'Some product');
-            $messageTemplate->message = str($messageTemplate->message)->replace('$total', 'Some total');
-            $messageTemplate->message = str($messageTemplate->message)->replace('$code', 'Some tracker code');
-        });
+        $messageTemplates = MessageTemplate::all();
 
         return response([
-                            'message' => "List of {$request->get('type')} Messages",
+                            'message' => 'List of Message Templates',
                             'data'    => $messageTemplates,
-                        ]);
+                        ], 200);
     }
 }

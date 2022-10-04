@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Customer;
 use App\Models\MessageTemplate;
-use App\Models\Order;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -122,21 +121,31 @@ class SearchController extends Controller
         return response($customers, 200);
     }
 
-    public function messages(Request $request, Order $order)
+    public function messages(Request $request)
     {
         $this->authorize('messaging-index');
 
-        $message = strtolower($request->message);
+        $message  = strtolower($request->message);
+        $status   = $request->status;
+        $delivery = $request->delivery;
 
-        if ($message) {
-            $messageTemplates = MessageTemplate::whereRaw('LOWER(message) LIKE (?)', ["%{$message}%"])
-                                               ->orWhereRaw('LOWER(message) LIKE (?)', ["%{$message}%"])
-                                               ->get()
-            ;
+        if ($message || $status || $delivery) {
+            $messageTemplates = MessageTemplate::whereRaw('LOWER(message) LIKE (?)', ["%{$message}%"]);
+
+            if ($delivery) {
+                $messageTemplates = $messageTemplates->whereHas('deliveryServices', function ($q) use ($delivery) {
+                    return $q->where('delivery_services.id', $delivery);
+                });
+            }
+            if ($status) {
+                $messageTemplates = $messageTemplates->whereHas('orderStatuses', function ($q) use ($status) {
+                    return $q->where('order_statuses.id', $status);
+                });
+            }
 
             return response([
                                 'message' => "List of Message Templates",
-                                'data'    => $messageTemplates,
+                                'data'    => $messageTemplates->get(),
                             ]);
         }
 

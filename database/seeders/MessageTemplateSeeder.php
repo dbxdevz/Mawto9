@@ -16,14 +16,6 @@ class MessageTemplateSeeder extends Seeder
      */
     public function run()
     {
-        if (!OrderStatus::all()) {
-            $this->call(OrderStatusSeeder::class);
-        }
-
-        if (!DeliveryService::all()) {
-            $this->call(DeliveryServiceSeeder::class);
-        }
-
         $messageTemplate = MessageTemplate::factory()
                                           ->create()
         ;

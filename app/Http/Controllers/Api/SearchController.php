@@ -125,22 +125,16 @@ class SearchController extends Controller
     {
         $this->authorize('messaging-index');
 
-        $message  = strtolower($request->message);
-        $status   = $request->status;
-        $delivery = $request->delivery;
+        $message = strtolower($request->message);
+        $status  = $request->status;
 
-        if ($message || $status || $delivery) {
+        if ($message || $status) {
             $messageTemplates = MessageTemplate::orderBy('id');
             if ($message) {
                 $messageTemplates = MessageTemplate::class;
                 $messageTemplates = $messageTemplates::whereRaw('LOWER(message) LIKE (?)', ["%{$message}%"]);
             }
-
-            if ($delivery) {
-                $messageTemplates = $messageTemplates->whereHas('deliveryServices', function ($q) use ($delivery) {
-                    return $q->where('delivery_services.id', $delivery);
-                });
-            }
+            
             if ($status) {
                 $messageTemplates = $messageTemplates->whereHas('orderStatuses', function ($q) use ($status) {
                     return $q->where('order_statuses.id', $status);

@@ -42,7 +42,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('histories', [HistoryController::class, 'index']);
 
 Route::middleware('auth:sanctum')
      ->get('/user', function (Request $request) {
@@ -86,6 +85,8 @@ Route::post('check-auth', [AuthController::class, 'chechAuth']);
 
 Route::middleware(['auth:sanctum'])
      ->group(function () {
+         Route::get('histories', [HistoryController::class, 'index']);
+
          //Profile
          Route::get('profile', [AuthController::class, 'profile']);
          Route::put('profile/update', [AuthController::class, 'update'])

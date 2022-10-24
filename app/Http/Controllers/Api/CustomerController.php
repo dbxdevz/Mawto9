@@ -5,11 +5,14 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Coustomer\StoreRequset;
 use App\Http\Requests\Coustomer\UpdateRequset;
+use App\Http\Traits\Message;
 use App\Models\Customer;
 use Illuminate\Http\Request;
 
 class CustomerController extends Controller
 {
+    use Message;
+
     /**
      * Display a listing of the resource.
      *
@@ -33,10 +36,10 @@ class CustomerController extends Controller
                 'city_id',
                 'whatsapp'
             )
-            ->paginate($limit)
+            ->get()
         ;
 
-        return response($customers, 200);
+        return response(['customers' => $customers], 200);
     }
 
     /**

@@ -18,7 +18,9 @@ class Order extends Model
 
     public function prority()
     {
-        return $this->belongsTo(OrderStatus::class, 'order_status_id')->with('orderPriority');
+        return $this->belongsTo(OrderStatus::class, 'order_status_id')
+                    ->with('orderPriority')
+        ;
     }
 
     public function orderPackage()
@@ -43,6 +45,8 @@ class Order extends Model
 
     public function products()
     {
-        return $this->hasMany(OrderDetail::class, 'order_id')->with('product:id,name');
+        return $this->hasMany(OrderDetail::class, 'order_id')
+                    ->with('product:id,name')
+        ;
     }
 }

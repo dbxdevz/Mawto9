@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Traits\Message;
 use App\Models\OwnTransaction;
 use App\Models\Product;
 use App\Models\TransactionProducts;
@@ -11,6 +12,9 @@ use Illuminate\Http\Request;
 
 class OwnTransactionController extends Controller
 {
+
+    use Message;
+
     /**
      * Display a listing of the resource.
      *
@@ -23,7 +27,7 @@ class OwnTransactionController extends Controller
         $limit = request('limit') ? request('limit') : 10;
 
         $transactions = OwnTransaction::select('id', 'created_at', 'name', 'company_name', 'total')
-                                      ->with('transactionProducts:quantity,product,subtotal,transaction_id')
+                                      ->with('transactionProducts:id,quantity,product,subtotal,own_transaction_id')
                                       ->paginate($limit)
         ;
 
@@ -135,7 +139,7 @@ class OwnTransactionController extends Controller
                                'note'         => ['nullable'],
                                'products'     => ['required'],
                            ]);
-
+        $data[]   = $request->all();
         $subTotal = 0;
         $total    = 0;
 
@@ -146,6 +150,10 @@ class OwnTransactionController extends Controller
 
             $subTotal = $subTotal + $productTran->cost_price * $product['quantity'];
         }
+
+        $data['sub_total'] = $subTotal;
+
+        $this->history($ownTransaction, 'Own Transaction', $data);
 
         $tva = Tva::where('id', $ownTransaction->tva_id)
                   ->first()
@@ -168,7 +176,7 @@ class OwnTransactionController extends Controller
             $productTran = Product::where('id', $product['product_id'])
                                   ->first()
             ;
-
+            //transaction_id => transaction_product:id
             $transactionProducts = TransactionProducts::where('own_transaction_id', $ownTransaction->id)
                                                       ->where('product_id', $productTran->id)
                                                       ->where('id', $product['transaction_id'])

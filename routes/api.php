@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\DeliveryManController;
 use App\Http\Controllers\Api\DeliveryServiceController;
 use App\Http\Controllers\Api\GoogleSheetController;
+use App\Http\Controllers\Api\HistoryController;
 use App\Http\Controllers\Api\MessageController;
 use App\Http\Controllers\Api\MessageTemplateController;
 use App\Http\Controllers\Api\OrderController;
@@ -41,6 +42,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('histories', [HistoryController::class, 'index']);
+
 Route::middleware('auth:sanctum')
      ->get('/user', function (Request $request) {
          return $request->user();
@@ -52,7 +55,7 @@ Route::get('city', function () {
                                               ->body()
     ;
 
-    $countries = ["Algeria", "Saudi arabia", "United arab emirate", "Qatar", "Oman", "Bahrain", "Iraq", "lebanon", "Kuwait", "Egypt"];
+    $countries = ["Algeria", "Saudi Arabia", "United Arab Emirates", "Qatar", "Oman", "Bahrain", "Iraq", "lebanon", "Kuwait", "Egypt"];
 
     $cities = json_decode($cities, true);
     foreach ($countries as $country) {
@@ -62,12 +65,15 @@ Route::get('city', function () {
                     'name' => $country,
                 ]);
                 foreach ($city['cities'] as $cit) {
-                    City::create([
-                                     'name'       => $cit,
-                                     'country_id' => $countr->id,
-                                 ]);
+                    if ($country === $city['country']) {
+                        City::create([
+                                         'name'       => $cit,
+                                         'country_id' => $countr->id,
+                                     ]);
+                    }
                 }
             }
+            unset($countries[$country]);
         }
     }
 });

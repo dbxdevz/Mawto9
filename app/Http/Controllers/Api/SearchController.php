@@ -130,7 +130,11 @@ class SearchController extends Controller
         $delivery = $request->delivery;
 
         if ($message || $status || $delivery) {
-            $messageTemplates = MessageTemplate::whereRaw('LOWER(message) LIKE (?)', ["%{$message}%"]);
+            $messageTemplates = MessageTemplate::orderBy('id');
+            if ($message) {
+                $messageTemplates = MessageTemplate::class;
+                $messageTemplates = $messageTemplates::whereRaw('LOWER(message) LIKE (?)', ["%{$message}%"]);
+            }
 
             if ($delivery) {
                 $messageTemplates = $messageTemplates->whereHas('deliveryServices', function ($q) use ($delivery) {

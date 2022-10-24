@@ -141,7 +141,7 @@ class TransactionController extends Controller
 
             $subTotal = $subTotal + $productTran->cost_price * $product['quantity'];
         }
-
+        
         $tva = Tva::where('id', $transaction->tva_id)
                   ->first()
         ;

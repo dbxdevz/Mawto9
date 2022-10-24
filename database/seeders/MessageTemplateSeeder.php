@@ -22,7 +22,7 @@ class MessageTemplateSeeder extends Seeder
         $messageTemplate->orderStatuses()
                         ->attach(
                             OrderStatus::all()
-                                       ->random(2)
+                                       ->random(1)
                                        ->pluck('id')
                                        ->toArray()
                         )
@@ -30,7 +30,7 @@ class MessageTemplateSeeder extends Seeder
         $messageTemplate->deliveryServices()
                         ->attach(
                             DeliveryService::all()
-                                           ->random(2)
+                                           ->random(1)
                                            ->pluck('id')
                                            ->toArray()
                         )
@@ -42,7 +42,7 @@ class MessageTemplateSeeder extends Seeder
         $messageTemplate->orderStatuses()
                         ->attach(
                             OrderStatus::all()
-                                       ->random(2)
+                                       ->random(1)
                                        ->pluck('id')
                                        ->toArray()
                         )
@@ -50,7 +50,7 @@ class MessageTemplateSeeder extends Seeder
         $messageTemplate->deliveryServices()
                         ->attach(
                             DeliveryService::all()
-                                           ->random(2)
+                                           ->random(1)
                                            ->pluck('id')
                                            ->toArray()
                         )
@@ -62,7 +62,7 @@ class MessageTemplateSeeder extends Seeder
         $messageTemplate->orderStatuses()
                         ->attach(
                             OrderStatus::all()
-                                       ->random(2)
+                                       ->random(1)
                                        ->pluck('id')
                                        ->toArray()
                         )
@@ -70,7 +70,7 @@ class MessageTemplateSeeder extends Seeder
         $messageTemplate->deliveryServices()
                         ->attach(
                             DeliveryService::all()
-                                           ->random(2)
+                                           ->random(1)
                                            ->pluck('id')
                                            ->toArray()
                         )
